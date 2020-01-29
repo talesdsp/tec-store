@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
@@ -52,13 +52,17 @@ const Section = styled.section`
 `;
 
 const ProductItem = React.memo(function ProductItem({product, inCart}) {
-  const {id, name, img, price, company} = product;
+  const {id, name, img, price, company, reviews} = product;
+  const [stars, updateStars] = useState(0);
+
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(CartCreators.addToCart(product));
     dispatch(ProductCreators.insideCart(product));
     dispatch(NotificationCreators.openNotification(product));
   };
+
+  useEffect(() => {}, [reviews]);
 
   return (
     <A to={`/details/${id}`}>
@@ -75,8 +79,11 @@ const ProductItem = React.memo(function ProductItem({product, inCart}) {
         <Info>
           <Brand>{company}</Brand>
           <Name>{name}</Name>
-          <Star class="fa fa-star-half-alt"></Star>
-          <Price>${price}</Price>
+
+          <Star className="fas fa-star"></Star>
+          <Star className="fas fa-star-half-alt"></Star>
+
+          <Price>{price.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}</Price>
         </Info>
       </Card>
     </A>
@@ -85,10 +92,12 @@ const ProductItem = React.memo(function ProductItem({product, inCart}) {
 
 const Star = styled.div`
   color: #ff0;
+  text-shadow: 0 0 1px #000;
+  padding: 1px;
 `;
 
 const TextOrIcon = ({inCart}) =>
-  inCart ? <Text>in cart</Text> : <i className="fa fa-cart-plus"></i>;
+  inCart ? <Text>in cart</Text> : <i className="fas fa-cart-plus"></i>;
 
 const Card = styled.div`
   width: 100vw;
