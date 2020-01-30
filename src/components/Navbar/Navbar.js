@@ -1,76 +1,136 @@
 import React from "react";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {A} from "../../styled/elements/A";
+import {HamburguerMenu} from "../Menu/Menu";
 
 export default function Navbar() {
   return (
     <Nav>
       <Section>
+        <HamburguerMenu />
         <A to="/">
           <img alt="store" />
         </A>
 
-        <Icon to="/cart" className="cart fa fa-shopping-cart" />
+        <Icon cart to="/cart" className="fas fa-shopping-cart" />
       </Section>
       <Section>
-        <Search type="text" placeholder="What are you looking for ?" />
-
-        <Icon to="" className="search fa fa-search" />
+        <Block>
+          <Search type="text" placeholder="What are you looking for ?" />
+          <Icon arrow to="" className="fas fa-angle-double-right fa-3x" />
+          <Button>
+            Search
+            <Icon search to="" className="fas fa-search" />
+          </Button>
+        </Block>
       </Section>
     </Nav>
   );
 }
 
+const Block = styled.div`
+  background-color: orange;
+  position: relative;
+  width: fit-content;
+  padding: 2px 5px;
+  cursor: pointer;
+  border: 1px solid #338;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  margin: 0;
+`;
+
+const Button = styled.button`
+  background: transparent;
+  border: none;
+  padding: none;
+  margin: none;
+  width: max-content;
+  padding-left: 20px;
+`;
+
 const Nav = styled.nav`
-  padding: 20px;
   color: #fff;
   background-color: #335;
   position: fixed;
   top: 0;
   width: 100vw;
   overflow: hidden;
-  z-index: 5;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-transform: capitalize !important;
 
   @media (min-width: 500px) {
+    width: unset;
+    padding: unset;
     position: relative;
-    width: 100vw;
+    margin: 0 5vw;
+    font-size: 2rem;
+    background: transparent;
   }
 `;
 
 const Section = styled.section`
-  position: relative;
-  width: 100%;
   display: flex;
   align-items: center;
+  padding: 0 20px;
   margin: 5px;
+
+  @media (min-width: 500px) {
+    width: fit-content;
+  }
 `;
 
-const Icon = styled(A)`
+const Icon = styled.i`
+  color: #fff;
   display: block;
-  position: absolute;
-  right: 10%;
   margin: 0;
+  cursor: pointer;
   padding: 0;
+  font-size: 1rem;
+  position: absolute;
 
-  .cart {
-    top: 0;
-  }
+  ${(props) =>
+    props.cart &&
+    css`
+      right: 5%;
+    `}
 
-  .search {
-    bottom: 0;
+  ${(props) =>
+    props.arrow &&
+    css`
+      right: 10%;
+      color: #f0f;
+      font-size: 5rem;
+    `}
+
+    ${(props) =>
+      props.search &&
+      css`
+        right: 0;
+      `}
+
+  @media (min-width: 500px) {
+    position: relative;
+    right: unset;
+    font-size: 2rem;
+    top: unset;
+    bottom: unset;
   }
 `;
 
 const Search = styled.input`
-  /* width: 50%; */
+  width: 50vw;
   border: 1px solid #eee;
   line-height: 1.2rem;
   padding: 5px 21px;
-
   border-radius: 2px;
+  margin-right: 5px;
+  @media (min-width: 500px) {
+    min-width: 50vw;
+  }
 `;
