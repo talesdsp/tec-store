@@ -141,20 +141,27 @@ const Icon = styled.i`
       font-size: 6rem;
     `}
   }
+  @media(min-width: 850px){
+  ${(props) =>
+    props.arrow &&
+    css`
+      right: 17%;
+    `}
+  }
   @media(min-width: 1000px){
-          ${(props) =>
-            props.arrow &&
-            css`
-              right: 15%;
-            `}
-        }
-    @media(min-width: 1400px){
-          ${(props) =>
-            props.arrow &&
-            css`
-              right: 12%;
-            `}
-      }
+    ${(props) =>
+      props.arrow &&
+      css`
+        right: 15%;
+      `}
+    }
+  @media(min-width: 1400px){
+    ${(props) =>
+      props.arrow &&
+      css`
+        right: 12%;
+      `}
+    }
 `;
 
 const Search = styled.input`
