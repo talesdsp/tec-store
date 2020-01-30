@@ -31,44 +31,19 @@ export default function Navbar() {
   );
 }
 
-const Block = styled.div`
-  background-color: orange;
-  position: relative;
-  width: fit-content;
-  padding: 2px 5px;
-  cursor: pointer;
-  border: 1px solid #338;
-  display: flex;
-  border-radius: 5px;
-  align-items: center;
-  margin: 0;
-`;
-
-const Button = styled.button`
-  background: transparent;
-  border: none;
-  padding: none;
-  margin: none;
-  width: max-content;
-  padding-left: 20px;
-`;
-
 const Nav = styled.nav`
   color: #fff;
   background-color: #335;
   position: fixed;
   top: 0;
   width: 100vw;
-  overflow: hidden;
+
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 1.5rem;
   text-transform: capitalize !important;
-
-  @media (min-width: 500px) {
-  }
 
   @media (min-width: 768px) {
     width: unset;
@@ -85,48 +60,101 @@ const Section = styled.section`
   align-items: center;
   padding: 0 20px;
   margin: 5px;
+`;
 
-  @media (min-width: 500px) {
-    width: fit-content;
-  }
+const Block = styled.div`
+  background-color: orange;
+  position: relative;
+  width: fit-content;
+  padding: 2px 5px;
+  cursor: pointer;
+  border: 1px solid #338;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  border-radius: 5px;
+  align-items: center;
+  margin: 0;
+`;
+
+const Button = styled.button`
+  background: transparent;
+  border: none;
+  padding: none;
+  margin: none;
+  display: flex;
+  width: max-content;
+  align-items: center;
+  color: #000;
+  cursor: pointer;
+  font-size: 1.2rem;
 `;
 
 const Icon = styled.i`
-  color: #fff;
   display: block;
   margin: 0;
-  cursor: pointer;
   padding: 0;
   font-size: 1rem;
   position: absolute;
-
+  
   ${(props) =>
     props.cart &&
     css`
+      cursor: pointer;
+      color: #fff;
       right: 5%;
     `}
+    
+    ${(props) =>
+      props.arrow &&
+      css`
+        right: 25%;
+        color: #f80;
+        background-color: transparent;
+        text-shadow: 0 0 20px #eee;
+        font-size: 5rem;
+      `}
+      
+      ${(props) =>
+        props.search &&
+        css`
+          color: #000;
+          position: relative;
+          margin-left: 5px;
+        `}
 
+
+@media(min-width: 500px){
   ${(props) =>
     props.arrow &&
     css`
-      right: 10%;
-      color: #f0f;
-      font-size: 5rem;
+      right: 20%;
     `}
+}
 
-    ${(props) =>
-      props.search &&
-      css`
-        right: 0;
-      `}
-
-  @media (min-width: 500px) {
-    position: relative;
-    right: unset;
-    font-size: 2rem;
-    top: unset;
-    bottom: unset;
+@media (min-width: 768px) {
+  font-size: 1.5rem;
+  
+  ${(props) =>
+    props.arrow &&
+    css`
+      font-size: 6rem;
+    `}
   }
+  @media(min-width: 1000px){
+          ${(props) =>
+            props.arrow &&
+            css`
+              right: 15%;
+            `}
+        }
+    @media(min-width: 1400px){
+          ${(props) =>
+            props.arrow &&
+            css`
+              right: 12%;
+            `}
+      }
 `;
 
 const Search = styled.input`
@@ -137,6 +165,5 @@ const Search = styled.input`
   border-radius: 2px;
   margin-right: 5px;
   @media (min-width: 500px) {
-    min-width: 50vw;
   }
 `;
