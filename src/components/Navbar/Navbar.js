@@ -1,13 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import styled, {css} from "styled-components";
 import {A} from "../../styled/elements/A";
-import {HamburguerMenu} from "../Menu/Menu";
+import {HamburguerMenu, SideMenu} from "../Menu/Menu";
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
   return (
     <Nav>
+      <SideMenu open={open} />
       <Section>
-        <HamburguerMenu />
+        <HamburguerMenu open={open} setOpen={setOpen} />
         <A to="/">
           <img alt="store" />
         </A>
@@ -65,6 +68,9 @@ const Nav = styled.nav`
   text-transform: capitalize !important;
 
   @media (min-width: 500px) {
+  }
+
+  @media (min-width: 768px) {
     width: unset;
     padding: unset;
     position: relative;

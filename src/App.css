@@ -4,20 +4,24 @@
   --mainWhite : #f3f3f3;
   --mainDark  : #232528;
   --mainYellow: #ffa400;
-  --buy-color : rgb(64, 205, 40);
+  --buy-color : rgb(0, 138, 0);
 }
 
+* {
+  font-family: "Cabin", sans-serif;
+}
 
 html {
-  height    : 100%;
-  width     : 100%;
   margin    : 0;
   padding   : 0;
   overflow-x: hidden;
 }
 
 body {
-  font-family: "Muli", sans-serif;
-  background : #fff;
-  color      : var(--mainDark);
+  overflow-x: hidden;
+  margin    : 0;
+  width     : 100vw;
+  height    : 100vh;
+  background: #eee;
+  color     : var(--mainDark);
 }
