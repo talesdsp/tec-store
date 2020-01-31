@@ -8,15 +8,30 @@ export default class V2Paypal extends Component {
     const history = this.props.history;
     return (
       <PayPalButton
-        amount={total}
-        onSuccess={(details, data) => {
-          console.log("onSuccess: details=", details);
-          console.log("onSuccess: data=", data);
+        createOrder={(data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: `${[...checklist.items]}`,
+                amount: {
+                  currency_code: "BRL",
+                  value: total
+                }
+              }
+            ]
+          });
         }}
-        options={{
-          clientId: process.env.REACT_APP_APP_ID,
-          vault: true
+        onApprove={(data, action) => {
+          return action.order.capture().then((details) => {
+            alert("Transaction completed by " + details.payer.name.given_name);
+            alert("checklist: " + checklist.items);
+          });
         }}
+        // options={
+        //   {
+        //     // clientId: process.env.REACT_APP_APP_ID
+        //   }
+        // }
         onCancel={(data) => alert(data)}
         onError={(err) => alert(err)}
       />

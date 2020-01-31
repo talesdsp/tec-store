@@ -1,10 +1,9 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
 import Notification from "../../styled/blocks/Notification";
-import {A} from "../../styled/elements/A";
-import {Text} from "../../styled/elements/Text";
+import {A, Text} from "../../styled/elements/";
 
 const AddedToCart = ({product}) => {
   return (
@@ -20,14 +19,14 @@ const AddedToCart = ({product}) => {
   );
 };
 
-export default function ProductsList() {
+export default function ProductsList({mode}) {
   const [{products}, {status, product, prev}] = useSelector((state) => [
     state.ProductReducer,
     state.NotificationReducer
   ]);
 
   return (
-    <Section>
+    <Section mode={mode}>
       {products.map((p) => (
         <ProductItem key={p.id} product={p} status={status} prev={prev} inCart={p.inCart} />
       ))}
@@ -37,19 +36,20 @@ export default function ProductsList() {
 }
 
 const Section = styled.section`
-  width: fit-content;
   @media (min-width: 768px) {
     display: flex;
+    width: 90vw;
+    margin: 0 5vw;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
   }
+  ${(props) => props.mode === "carousel" && css``}
 `;
 
 const ProductItem = React.memo(function ProductItem({product, inCart, status, prev}) {
   const {id, name, img, info, price, company, reviews} = product;
   // const [stars, updateStars] = useState(0);
-  console.log({prev});
   const dispatch = useDispatch();
 
   const handleClick = async () => {
@@ -68,21 +68,29 @@ const ProductItem = React.memo(function ProductItem({product, inCart, status, pr
 
   return (
     <Card>
+      {/* <Ripplefy> */}
       <Container to={`/details/${id}`}>
         <Header>
           <Image src={img} alt="product" />
         </Header>
 
-        {/* card footer */}
         <Info>
           <Brand>{company}</Brand>
           <Name>{name}</Name>
-          <Star className="fas fa-star"></Star>
-          <Star className="fas fa-star-half-alt"></Star>
+          <Reviews>
+            {
+              <>
+                <Star className="fas fa-star"></Star>
+                <Star className="fas fa-star-half-alt"></Star>
+              </>
+            }{" "}
+            {reviews} reviews
+          </Reviews>
           <Price>{price.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}</Price>
-          <Description>{info.substring(0, 60)}...</Description>
+          <Description>{info.substring(0, 75)}...</Description>
         </Info>
       </Container>
+      {/* </Ripplefy> */}
       <Button disabled={inCart ? true : false} onClick={handleClick}>
         <TextOrIcon inCart={inCart} />
       </Button>
@@ -96,6 +104,11 @@ const TextOrIcon = ({inCart}) =>
   ) : (
     <i style={{fontSize: "1rem", color: "#338"}} className="fas fa-cart-arrow-down"></i>
   );
+
+const Reviews = styled.div`
+  display: inline;
+  color: #000;
+`;
 
 const Card = styled.div`
   width: 90vw;
@@ -188,17 +201,17 @@ const Info = styled.div`
     width: unset;
     flex: 1;
     &:hover {
-      flex: 12;
+      flex: 5;
     }
   }
 
-  @media (min-width: 940px) {
+  @media (min-width: 1000px) {
     &:hover {
-      flex: 8;
+      flex: 4;
     }
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1400px) {
     &:hover {
       flex: 3;
     }
@@ -261,7 +274,7 @@ const Description = styled.div`
   }
 
   @media (min-width: 768px) {
-    padding: 5px 20px 20px 0;
+    padding: 8px 20px 20px 0;
     right: unset;
     left: unset;
     top: unset;
@@ -273,7 +286,7 @@ const Description = styled.div`
     }
   }
   @media (min-width: 1000px) {
-    padding: 5px 20px 0 0;
+    padding: 8px 20px 0 0;
   }
 `;
 
@@ -290,8 +303,4 @@ const Button = styled.button`
   height: 30px;
   border-top-left-radius: 0.5rem;
   transition: transform 0.5s ease-in-out;
-
-  @media (min-width: 768px) {
-    /* transform: translate(100%, 100%); */
-  }
 `;

@@ -1,21 +1,18 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
 import styled from "styled-components";
-import {CartCreators} from "../../store/ducks/cart";
-import {ProductCreators} from "../../store/ducks/products";
-import {Button} from "../../styled/elements/Buttons";
-import {Text} from "../../styled/elements/Text";
+import {CartCreators, ProductCreators} from "../../store/ducks/";
+import {A, Text} from "../../styled/elements/";
 
 export default function Details({match}) {
   const product = useSelector((state) => state.ProductReducer.products[match.params.product - 1]);
   const dispatch = useDispatch();
   const {company, title, img, info, price, inCart} = product;
 
-  function handleClick() {
+  const handleClick = () => {
     dispatch(CartCreators.addToCart(product));
     dispatch(ProductCreators.insideCart(product));
-  }
+  };
 
   return (
     <DetailsContainer className="container py-5">
@@ -48,22 +45,15 @@ export default function Details({match}) {
                 some info about this product:
               </p>
               <Text>{info}</Text>
+              <A to="/">back to products</A>
               <div>
-                <Link to="/">
-                  <Button>back to products</Button>
-                </Link>
-
-                <Link to="/cart">
-                  <Button
-                    cart
-                    disabled={inCart ? true : false}
-                    className={inCart ? "disabled" : ""}
-                    onClick={() => handleClick()}
-                  >
-                    {inCart ? "inCart" : "add to cart"}
-                  </Button>
-                </Link>
+                <div
+                  onClick={handleClick}
+                  style={{width: "200px", position: "relative", height: "100px"}}
+                >
+                  {inCart ? "inCart" : "add to cart"}
                 </div>
+              </div>
             </div>
           </div>
         </div>

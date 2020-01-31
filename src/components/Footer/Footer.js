@@ -1,37 +1,50 @@
 import React from "react";
 import styled, {css} from "styled-components";
-import {A} from "../../styled/elements/A";
+import paypal from "../../paypal.svg";
+import {A} from "../../styled/elements/";
 
 export default function Footer() {
   return (
     <FinalCredits>
-      <Brand>
-        <img src="" alt="brand" />
-      </Brand>
+      <Payments>
+        <i style={{color: "#003087", fontSize: "1.4rem"}} className="fas fa-lock"></i>{" "}
+        <img src={paypal} alt="" />
+      </Payments>
+
+      <Brand>Store</Brand>
       <Info>
         <Container>
           <Ul left>
-            <Li>My Cart</Li>
-            <Li>About Us</Li>
-            <Li>FAQ</Li>
+            <Li to="/">My Cart</Li>
+            <Li to="/">About Us</Li>
+            <Li to="/">FAQ</Li>
           </Ul>
         </Container>
         <Container>
           <Ul right>
-            <Li>Privacy</Li>
-            <Li>Terms Of Use</Li>
-            <Li>Refund</Li>
+            <Li to="/">Privacy</Li>
+            <Li to="/">Terms Of Use</Li>
+            <Li to="/">Refund</Li>
           </Ul>
         </Container>
       </Info>
 
-      <Apply>Work With Us</Apply>
+      <Apply to="/">Work With Us</Apply>
 
-      <Address>NYC - Street 777 / Apt: 525 Really Awesome Name CNPJ: XXXXXXXXX</Address>
+      <Address>NYC - Street 777 / Apt: 42 Really Awesome Name CNPJ: XXXXXXXXX</Address>
     </FinalCredits>
   );
 }
-
+const Payments = styled.div`
+  padding: 20px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  img {
+    margin: 0 8px;
+    height: 4vh;
+  }
+`;
 const FinalCredits = styled.footer`
   font-size: 0.9rem;
   position: relative;
@@ -44,11 +57,12 @@ const FinalCredits = styled.footer`
 
 const Brand = styled.div`
   text-align: center;
-  padding: 30px 0 0 10px;
-
-  img {
-    margin: 0 auto;
-  }
+  color: #fff;
+  overflow: hidden;
+  width: fit-content;
+  font-size: 1.3rem;
+  margin: 30px auto 0;
+  position: relative;
 `;
 
 const Info = styled.div`
@@ -60,7 +74,10 @@ const Info = styled.div`
   flex-direction: row;
 
   @media (min-width: 768px) {
-    display: block;
+    width: 80vw;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -69,8 +86,12 @@ const Container = styled.div`
   position: relative;
   padding: 1px;
 
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
+
+  @media (min-width: 768px) {
+    flex: unset;
+  }
 `;
 
 const Ul = styled.ul`
@@ -98,11 +119,20 @@ const Ul = styled.ul`
 
 const Li = styled(A)`
   margin: 5px 0;
+  width: fit-content;
+
+  @media (min-width: 768px) {
+    margin: 5px 20px;
+  }
 `;
 
 const Apply = styled(A)`
-  margin: 40px auto;
+  width: fit-content;
+  margin: 30px auto;
   text-align: center;
+  @media (min-width: 768px) {
+    margin: 20px auto 30px;
+  }
 `;
 
 const Address = styled.address`

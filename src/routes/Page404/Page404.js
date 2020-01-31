@@ -1,11 +1,11 @@
 import React from "react";
-import {Button} from "../../styled/elements/Buttons";
+import {Ripplefy} from "../../styled/elements/";
 
 export default function Page404() {
   return (
     <div>
       This page does not exist
-      <Button />
+      <Ripplefy />
     </div>
   );
 }

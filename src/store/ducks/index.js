@@ -5,7 +5,7 @@ import ProductReducer, {ProductCreators} from "./products";
 import UserReducer, {UserCreators} from "./user";
 
 const logger = (state = {}, action) => {
-  console.log(`%c Redux:`, "font-size: 2rem; color: purple", action);
+  console.log(`%cRedux:`, "font-size: 2rem; color: purple", action);
   return state;
 };
 

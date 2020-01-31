@@ -23,25 +23,18 @@ export default function Home() {
           ))}
         </Select>
       </Filter>
-      <Window>
-        <Container>
-          <ProductsList />
-        </Container>
-      </Window>
+
+      <Container>
+        <ProductsList />
+      </Container>
     </React.Fragment>
   );
 }
 
-const Window = styled.div`
+const Container = styled.div`
   @media (min-width: 768px) {
     width: 100vw;
     overflow: hidden;
-  }
-`;
-
-const Container = styled.div`
-  @media (min-width: 768px) {
-    padding: 0 5vw;
   }
 `;
 
@@ -68,7 +61,7 @@ const Title = styled.h1`
   &::after {
     position: absolute;
   }
-  @media (min-width: 500px) {
+  @media (min-width: 768px) {
     margin: 20px auto;
   }
 `;
