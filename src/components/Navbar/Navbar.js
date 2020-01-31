@@ -1,15 +1,21 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import styled, {css, keyframes} from "styled-components";
-import {A} from "../../styled/elements/";
+import {A} from "../../styled/ELEMENTS/";
 import {HamburguerMenu, SideMenu} from "../Menu/Menu";
 
 export default function Navbar() {
   const {items} = useSelector((state) => state.CartReducer);
+  let history = useHistory();
 
   //burger menu
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
+
+  const goBack = () => {
+    history.push("/");
+  };
 
   const showCart = () => {
     setDrop(true);
@@ -37,7 +43,7 @@ export default function Navbar() {
                 {items.map((v, i) => (
                   <ITEM key={i}>
                     <Head>
-                      <Image src={v.img} alt={v.name} />
+                      <Image src={`${process.env.PUBLIC_URL}/${v.img}`} alt={v.name} />
                     </Head>
                     <Info>
                       <Name>{v.name}</Name>
@@ -53,7 +59,14 @@ export default function Navbar() {
                 ))}
               </Scroll>
               <CTA>
-                <Wait onClick={closeCart}>Wait</Wait>
+                <Wait
+                  onClick={() => {
+                    closeCart();
+                    goBack();
+                  }}
+                >
+                  Wait
+                </Wait>
                 <Continue to="/cart">Continue</Continue>
               </CTA>
             </SUMMARY>
@@ -206,7 +219,7 @@ const Continue = styled(A)`
   }
 `;
 
-const Wait = styled.div`
+const Wait = styled.button`
   flex: 1;
   background-color: #338;
   cursor: pointer;

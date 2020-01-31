@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import styled from "styled-components";
 import ProductsList from "../../components/Products/Products";
 
-export default function Home() {
+export default function HomePage() {
   const {products} = useSelector((state) => state.ProductReducer);
 
   let brands = products.map((v) => v.company.toLowerCase());

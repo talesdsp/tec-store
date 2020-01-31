@@ -4,9 +4,9 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
-import Cart from "./routes/Cart/Cart";
-import Details from "./routes/Details/Details";
-import Home from "./routes/Home/Home";
+import CartPage from "./routes/Cart/Cart";
+import DetailsPage from "./routes/Details/Details";
+import HomePage from "./routes/Home/Home";
 import Page404 from "./routes/Page404/Page404";
 import store from "./store";
 
@@ -22,9 +22,9 @@ function App() {
         <Navbar />
 
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/details/:product" component={Details} />
-          <Route exact path="/cart" component={Cart} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/details/:product" component={DetailsPage} />
+          <Route exact path="/cart" component={CartPage} />
           <Route component={Page404} />
         </Switch>
 

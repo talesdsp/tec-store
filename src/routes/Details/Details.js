@@ -1,64 +1,101 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import {CartCreators, ProductCreators} from "../../store/ducks/";
-import {A, Text} from "../../styled/elements/";
+import {AddedToCart, TextOrIcon} from "../../components";
+import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks/";
+import {ADD_BUTTON, TEXT} from "../../styled/ELEMENTS";
 
-export default function Details({match}) {
-  const product = useSelector((state) => state.ProductReducer.products[match.params.product - 1]);
+export default function DetailsPage({match}) {
+  const [{status}, {products}] = useSelector((state) => [
+    state.NotificationReducer,
+    state.ProductReducer
+  ]);
+
+  const product = products[match.params.product - 1];
   const dispatch = useDispatch();
-  const {company, title, img, info, price, inCart} = product;
+  let history = useHistory();
+
+  const {company, img, info, price, name, inCart} = product;
 
   const handleClick = () => {
     dispatch(CartCreators.addToCart(product));
     dispatch(ProductCreators.insideCart(product));
+    dispatch(NotificationCreators.openNotification(product));
+
+    setTimeout(() => dispatch(NotificationCreators.closeNotification(product)), 3000);
   };
 
+  const goBack = (evt) => history.push("/");
+
   return (
-    <DetailsContainer className="container py-5">
-      <div className="row">
-        <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
-          <h1>{title}</h1>
+    <Details>
+      {status && <AddedToCart product={product} />}
+      <Section>
+        <Title>{name}</Title>
+        <Image src={`${process.env.PUBLIC_URL}/${img}`} alt="product" />
+      </Section>
 
-          {/* Product info */}
-          <div className="row">
-            {/* Product image */}
-            <div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-              <img src={`${process.env.PUBLIC_URL}/${img}`} alt="product" className="img-fluid" />
-            </div>
+      <Section>
+        <Subhead>Model:</Subhead>
+        <TEXT>{name}</TEXT>
 
-            <div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-              <h2>Model: {title}</h2>
+        <Subhead>Made by:</Subhead>
+        <TEXT>{company}</TEXT>
 
-              <h4 className="text-title text-uppercase text-muted mt-3 mb-2">
-                Made by: <span className="text-uppercase">{company}</span>
-              </h4>
+        <Subhead>Price:</Subhead>
+        <TEXT>{price.toLocaleString("pt-br", {style: "currency", currency: "BRL"})}</TEXT>
 
-              <h4 className="text-blue">
-                <strong>
-                  Price: <span>$</span>
-                  {price}
-                </strong>
-              </h4>
+        <Subhead>Details:</Subhead>
+        <TEXT>{info}</TEXT>
 
-              <p className="text-capitalize font-weight-bold mt-3 mb-0">
-                some info about this product:
-              </p>
-              <Text>{info}</Text>
-              <A to="/">back to products</A>
-              <div>
-                <div
-                  onClick={handleClick}
-                  style={{width: "200px", position: "relative", height: "100px"}}
-                >
-                  {inCart ? "inCart" : "add to cart"}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </DetailsContainer>
+        <Row>
+          <Back onClick={goBack}>Back to products</Back>
+          <Add disabled={inCart ? true : false} onClick={handleClick}>
+            <TextOrIcon inCart={inCart} />
+          </Add>
+        </Row>
+      </Section>
+    </Details>
   );
 }
-const DetailsContainer = styled.div``;
+const Details = styled.div`
+  padding: 102px 20px 20px;
+`;
+
+const Section = styled.section``;
+
+const Title = styled.h2``;
+
+const Image = styled.img`
+  width: 100%;
+`;
+
+const Subhead = styled.h2`
+  margin-bottom: 5px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+`;
+
+// ? The code below inherits the style then appends the css in JS
+const Back = styled(ADD_BUTTON)((props) => ({
+  backgroundColor: "#335",
+  position: "relative",
+  border: "1px solid #335",
+  flex: "1",
+  color: "#fff",
+  cursor: "pointer"
+}));
+
+const Add = styled(ADD_BUTTON)((props) => ({
+  position: "relative",
+  border: "1px solid #fff",
+  borderRadius: " 0 .5em 0 0",
+  flex: "1"
+}));

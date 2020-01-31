@@ -19,10 +19,10 @@ export const A = styled(Link)`
   }
 `;
 
-export const Text = styled.p`
-  text-align: center;
+export const TEXT = styled.p`
   text-transform: capitalize;
   font-size: 1rem;
+  line-height: 1.3rem;
   margin: 0;
 `;
 
@@ -38,7 +38,7 @@ const Clickable = styled.div`
   position: relative;
 `;
 
-export const Ripplefy = ({children}) => {
+export const RIPPLEFY = ({children}) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [open, setOpen] = useState(false);
@@ -104,4 +104,19 @@ const Ripple = styled.span`
   animation: ${animateRipple} 1s;
   opacity: 0;
   z-index: 1;
+`;
+
+export const ADD_BUTTON = styled.button`
+  position: absolute;
+  cursor: ${(props) => (props.disabled === true ? "auto" : "grab")};
+  margin: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #fff;
+  width: 66px;
+  height: 30px;
+  border-top-left-radius: 0.5rem;
+  transition: transform 0.5s ease-in-out;
 `;

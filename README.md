@@ -1,3 +1,10 @@
+## Map
+
+SCREAMING_SNAKE_CASE for reusable STYLED_COMPONENTS
+One-word Capitalized for local Styledcomponents
+Two-Words PascalCase for ReactComponent
+UPPERCASE for REDUX
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -1,23 +1,9 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components";
+import {AddedToCart, TextOrIcon} from "..";
 import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
-import Notification from "../../styled/blocks/Notification";
-import {A, Text} from "../../styled/elements/";
-
-const AddedToCart = ({product}) => {
-  return (
-    <A to="/cart">
-      <Notification>
-        <Notification.Message>Added to cart</Notification.Message>
-        <Notification.Product>
-          <Notification.Image src={product.img} alt="" />
-          <Notification.Name>{product.name}</Notification.Name>
-        </Notification.Product>
-      </Notification>
-    </A>
-  );
-};
+import {A} from "../../styled/ELEMENTS";
 
 export default function ProductsList({mode}) {
   const [{products}, {status, product, prev}] = useSelector((state) => [
@@ -91,19 +77,11 @@ const ProductItem = React.memo(function ProductItem({product, inCart, status, pr
         </Info>
       </Container>
       {/* </Ripplefy> */}
-      <Button disabled={inCart ? true : false} onClick={handleClick}>
-        <TextOrIcon inCart={inCart} />
-      </Button>
+
+      <TextOrIcon inCart={inCart} disabled={inCart ? true : false} onClick={handleClick} />
     </Card>
   );
 });
-
-const TextOrIcon = ({inCart}) =>
-  inCart ? (
-    <Text>in cart</Text>
-  ) : (
-    <i style={{fontSize: "1rem", color: "#338"}} className="fas fa-cart-arrow-down"></i>
-  );
 
 const Reviews = styled.div`
   display: inline;
@@ -288,19 +266,4 @@ const Description = styled.div`
   @media (min-width: 1000px) {
     padding: 8px 20px 0 0;
   }
-`;
-
-const Button = styled.button`
-  position: absolute;
-  cursor: ${(props) => (props.disabled === true ? "auto" : "grab")};
-  margin: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  background: white;
-  border: 1px solid #eee;
-  width: 66px;
-  height: 30px;
-  border-top-left-radius: 0.5rem;
-  transition: transform 0.5s ease-in-out;
 `;
