@@ -112,9 +112,9 @@ export const ADD_BUTTON = styled.button`
   margin: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden;
-  background: white;
-  border: 1px solid #fff;
+  background: #fff;
+  border: 1px solid #eee;
+  border-bottom-right-radius: 5px;
   width: 66px;
   height: 30px;
   border-top-left-radius: 0.5rem;

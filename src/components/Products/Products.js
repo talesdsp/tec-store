@@ -1,22 +1,21 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components";
-import {AddedToCart, TextOrIcon} from "..";
+import {TextOrIcon} from "..";
 import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
-import {A} from "../../styled/ELEMENTS";
+import {A, ADD_BUTTON} from "../../styled/ELEMENTS";
 
 export default function ProductsList({mode}) {
-  const [{products}, {status, product, prev}] = useSelector((state) => [
+  const [{products}, {status, prev}] = useSelector((state) => [
     state.ProductReducer,
     state.NotificationReducer
   ]);
 
   return (
     <Section mode={mode}>
-      {products.map((p) => (
-        <ProductItem key={p.id} product={p} status={status} prev={prev} inCart={p.inCart} />
+      {products.map((v) => (
+        <ProductItem key={v.id} product={v} status={status} prev={prev} inCart={v.inCart} />
       ))}
-      {status && <AddedToCart product={product} />}
     </Section>
   );
 }
@@ -45,10 +44,7 @@ const ProductItem = React.memo(function ProductItem({product, inCart, status, pr
 
     dispatch(CartCreators.addToCart(product));
     dispatch(ProductCreators.insideCart(product));
-
     dispatch(NotificationCreators.openNotification(product));
-
-    setTimeout(() => dispatch(NotificationCreators.closeNotification(product)), 3000);
   };
   useEffect(() => {}, [reviews, status]);
 
@@ -77,11 +73,16 @@ const ProductItem = React.memo(function ProductItem({product, inCart, status, pr
         </Info>
       </Container>
       {/* </Ripplefy> */}
-
-      <TextOrIcon inCart={inCart} disabled={inCart ? true : false} onClick={handleClick} />
+      <Add disabled={inCart ? true : false} onClick={handleClick}>
+        <TextOrIcon inCart={inCart} color="#338" />
+      </Add>
     </Card>
   );
 });
+
+const Add = styled(ADD_BUTTON)`
+  box-shadow: 5px 5px 7px #000;
+`;
 
 const Reviews = styled.div`
   display: inline;
@@ -248,7 +249,7 @@ const Description = styled.div`
     left: 50%;
   }
   @media (min-width: 500px) {
-    left: 30%;
+    left: 40%;
   }
 
   @media (min-width: 768px) {

@@ -1,8 +1,8 @@
 import React from "react";
 import styled, {css} from "styled-components";
-import {A} from "../../styled/elements/";
+import {A} from "../../styled/ELEMENTS/";
 
-export function SideMenu({open}) {
+export function SideMenu({open, items}) {
   return (
     <Menu open={open}>
       <Content>
@@ -20,19 +20,19 @@ const Menu = styled.div`
   left: -180px;
   opacity: 1;
   top: 0;
+  background-image: linear-gradient(135deg, #338, #335);
   transition: all 0.5s ease-out;
   display: block;
   height: 100vh;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  overflow: hidden;
   width: 180px;
+  z-index: 2;
 
   ${(props) =>
     props.open &&
     css`
-      background-color: #335;
-      left: 0%;
-      overflow: hidden;
-      z-index: 2;
+      left: 0;
     `}
   @media(min-width: 768px) {
     display: none;
@@ -44,12 +44,12 @@ const Content = styled.div`
   margin: 0;
   display: flex;
   list-style: none;
+  padding-top: 20px;
 `;
 
 const Item = styled(A)`
   padding: 10px 30px;
   flex: 1;
-
   &:hover {
     color: #000;
     background-color: orange;
@@ -69,8 +69,8 @@ export function HamburguerMenu({open, setOpen}) {
 }
 
 const Clickable = styled.div`
-  height: 25px;
-  padding: 5px;
+  height: 40%;
+  padding: 2px 10px;
   margin: 0;
   display: flex;
   align-items: center;
@@ -81,12 +81,17 @@ const Clickable = styled.div`
   margin-right: 10px;
   z-index: 1;
   transition: all 0.5s ease-out;
+  border-radius: 50%;
 
+  &:active,
+  &:focus {
+    background-color: #337;
+  }
   ${(props) =>
     props.open &&
     css`
+      background-color: #336;
       left: 180px;
-      background-color: #335;
     `}
 
   @media (min-width: 768px) {
@@ -95,7 +100,6 @@ const Clickable = styled.div`
 `;
 
 const MENU_BTN__BURGER = styled.div`
-  margin: auto;
   display: block;
   background: #fff;
   position: relative;

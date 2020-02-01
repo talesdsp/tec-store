@@ -13,7 +13,7 @@ import store from "./store";
 function App() {
   console.log("%cEspere!", "color: red; font-size: 3rem; font-weight: bold;");
   console.log(
-    "%cEste e um recurso de navegador voltado para desenvolvedores. Se alguem disse para voce copiar e colar algo aqui para ativar um recurso ou 'invadir' a conta de outra pessoa, isso e uma fraude e voce dara a ele acesso a sua conta. ",
+    "%cEste é um recurso de navegador voltado para desenvolvedores. Se alguém disse para voce copiar e colar algo aqui para ativar um recurso ou 'invadir' a conta de outra pessoa, isso é uma fraude e voce dará a ele acesso a sua conta. ",
     "color: #aaa; font-size: 1.6rem; font-weight: bold"
   );
   return (

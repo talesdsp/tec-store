@@ -2,76 +2,95 @@ import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css, keyframes} from "styled-components";
-import {A} from "../../styled/ELEMENTS/";
+import {TEXT} from "../../styled/ELEMENTS";
+import {AddedToCart} from "../index";
 import {HamburguerMenu, SideMenu} from "../Menu/Menu";
 
 export default function Navbar() {
-  const {items} = useSelector((state) => state.CartReducer);
+  const [{items}, {status, product}] = useSelector((state) => [
+    state.CartReducer,
+    state.NotificationReducer
+  ]);
   let history = useHistory();
 
   //burger menu
   const [open, setOpen] = useState(false);
   const [drop, setDrop] = useState(false);
 
-  const goBack = () => {
-    history.push("/");
+  const showCart = () => setDrop(true);
+  const closeCart = () => setDrop(false);
+
+  const goBack = () => history.push("/") & closeCart();
+  const goCart = () => history.push("/cart") & closeCart();
+
+  const DisplayItems = () => {
+    return items.length > 0 ? (
+      <Scroll>
+        {items.map((v, i) => (
+          <ITEM key={i}>
+            <Head>
+              <Image src={`${process.env.PUBLIC_URL}/${v.img}`} alt={v.name} />
+            </Head>
+            <Info>
+              <Name>{v.name}</Name>
+              <Qty>quantity: {v.quantity}</Qty>
+              <Price>
+                {(v.price * v.quantity).toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL"
+                })}
+              </Price>
+            </Info>
+          </ITEM>
+        ))}
+      </Scroll>
+    ) : (
+      <div style={{padding: "20px"}}>
+        <TEXT style={{color: "#333", marginBottom: "20px"}}>Your cart is empty.</TEXT>
+        <TEXT style={{color: "#333"}}>Start adding products.</TEXT>
+      </div>
+    );
   };
 
-  const showCart = () => {
-    setDrop(true);
-  };
-  const closeCart = (evt) => {
-    setDrop(false);
+  const CartSummary = () => {
+    return (
+      drop && (
+        <>
+          <SHADOW onClick={closeCart}></SHADOW>
+          <SUMMARY>
+            <Arrow />
+            <MyCart>My Shopping Cart</MyCart>
+            <DisplayItems />
+            <CTA>
+              <Close onClick={closeCart}>Close</Close>
+
+              {items.length > 0 ? (
+                <Continue onClick={goCart}>Continue</Continue>
+              ) : (
+                <Continue onClick={goBack}>Add</Continue>
+              )}
+            </CTA>
+          </SUMMARY>
+        </>
+      )
+    );
   };
 
   return (
     <Nav>
-      <SideMenu open={open} />
+      {status && <AddedToCart product={product} />}
+
+      <SideMenu open={open} items={items} />
+      {open && <SHADOW onClick={() => setOpen(false)} />}
+
       <Section>
         <HamburguerMenu open={open} setOpen={setOpen} />
 
-        <Brand to="/">Store</Brand>
+        <Brand onClick={goBack}>Store</Brand>
 
+        {items.length > 0 && <Counter>{items.length}</Counter>}
         <Icon cart to="/cart" className="fas fa-shopping-cart" onPointerEnter={showCart} />
-        {drop && (
-          <>
-            <Shadow onClick={closeCart}></Shadow>
-            <SUMMARY>
-              <Arrow />
-              <MyCart>My Shopping Cart</MyCart>
-              <Scroll>
-                {items.map((v, i) => (
-                  <ITEM key={i}>
-                    <Head>
-                      <Image src={`${process.env.PUBLIC_URL}/${v.img}`} alt={v.name} />
-                    </Head>
-                    <Info>
-                      <Name>{v.name}</Name>
-                      <Qty>quantity: {v.quantity}</Qty>
-                      <Price>
-                        {(v.price * v.quantity).toLocaleString("pt-br", {
-                          style: "currency",
-                          currency: "BRL"
-                        })}
-                      </Price>
-                    </Info>
-                  </ITEM>
-                ))}
-              </Scroll>
-              <CTA>
-                <Wait
-                  onClick={() => {
-                    closeCart();
-                    goBack();
-                  }}
-                >
-                  Wait
-                </Wait>
-                <Continue to="/cart">Continue</Continue>
-              </CTA>
-            </SUMMARY>
-          </>
-        )}
+        <CartSummary />
       </Section>
       <Section>
         <Block>
@@ -86,9 +105,27 @@ export default function Navbar() {
     </Nav>
   );
 }
-const Shadow = styled.div`
+
+const Counter = styled.div`
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  text-align: center;
+  color: #000;
+  padding: 0 0 0 0px;
+  font-size: 0.8rem;
+  background-color: springgreen;
+  right: 4%;
+  top: 2px;
+  @media (min-width: 768px) {
+    top: 6px;
+  }
+`;
+
+const SHADOW = styled.div`
   all: unset;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-image: linear-gradient(120deg, #33338855, #33335555);
   position: fixed;
   left: 0;
   top: 0;
@@ -107,6 +144,7 @@ const SUMMARY = styled.div`
   display: block;
   height: 300px;
   width: 300px;
+  border-radius: 5px;
   z-index: 1;
   transition: all 0.5s linear;
   background-color: #fff;
@@ -120,8 +158,8 @@ const Arrow = styled.div`
   position: absolute;
   right: 4.5px;
   transition: all 0.5s linear;
-  top: -9px;
-  background-color: #fff;
+  top: -7px;
+  background-color: #335;
   width: 20px;
   height: 20px;
   rotate: 45deg;
@@ -129,11 +167,12 @@ const Arrow = styled.div`
 `;
 
 const MyCart = styled.div`
-  color: #000;
+  color: #fff;
+  background: #335;
   padding: 10px 0;
   transition: all 0.5s linear;
   text-align: center;
-  border-bottom: 3px solid #555;
+
   transition: all 0.5s linear;
 `;
 
@@ -200,7 +239,7 @@ const CTA = styled.div`
   background-color: #eee;
   position: absolute;
   left: 0;
-  padding: 10px auto;
+  padding: 20px auto;
   width: 100%;
   text-align: center;
   display: flex;
@@ -210,26 +249,38 @@ const CTA = styled.div`
   bottom: 0;
 `;
 
-const Continue = styled(A)`
+const Close = styled.button`
+  border-color: transparent;
   flex: 1;
-  background-color: rgb(0, 150, 0);
+  color: #333;
+  cursor: pointer;
 
+  width: unset;
+  height: unset;
+  font-size: 1.6rem;
+`;
+
+const Continue = styled.button`
+  border-color: transparent;
+  font-size: 1.6rem;
+  padding: 0;
+  flex: 1;
+  background-color: springgreen;
+  cursor: pointer;
+  color: #fff;
+
+  /*   Added in case it is bad to read */
   &:hover {
-    color: #fff;
+    color: #000;
   }
 `;
 
-const Wait = styled.button`
-  flex: 1;
-  background-color: #338;
-  cursor: pointer;
-`;
-
+//! ------------
 // ? NAVBAR
 
 const Nav = styled.nav`
   color: #fff;
-  background-color: #335;
+  background-image: linear-gradient(135deg, #338, #335);
   position: fixed;
   top: 0;
   width: 100vw;
@@ -260,6 +311,7 @@ const Section = styled.section`
 
 const Brand = styled.h1`
   margin: 0;
+  cursor: pointer;
   @media (min-width: 768px) {
     margin: initial;
   }
@@ -315,7 +367,7 @@ const Icon = styled.i`
         right: 25%;
         color: #f80;
         background-color: transparent;
-        text-shadow: 0 0 20px #eee;
+        text-shadow: 0 0 10px #ddd;
         font-size: 4.5rem;
       `}
       
