@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import {PayPalButton} from "react-paypal-button-v2";
 
 export default class V2Paypal extends Component {
@@ -6,6 +6,7 @@ export default class V2Paypal extends Component {
     const checklist = this.props.checklist;
     const total = this.props.total;
     const history = this.props.history;
+
     return (
       <PayPalButton
         createOrder={(data, actions) => {
@@ -14,24 +15,25 @@ export default class V2Paypal extends Component {
               {
                 description: `${[...checklist.items]}`,
                 amount: {
-                  currency_code: "BRL",
+                  currency: "BRL",
                   value: total
                 }
               }
             ]
           });
         }}
+        style={{shape: "pill", color: "blue", label: "installment", period: 12}}
         onApprove={(data, action) => {
           return action.order.capture().then((details) => {
             alert("Transaction completed by " + details.payer.name.given_name);
             alert("checklist: " + checklist.items);
           });
         }}
-        // options={
-        //   {
-        //     // clientId: process.env.REACT_APP_APP_ID
-        //   }
-        // }
+        options={{
+          clientId: "sb",
+          currency: "BRL",
+          commit: false
+        }}
         onCancel={(data) => alert(data)}
         onError={(err) => alert(err)}
       />

@@ -1,7 +1,9 @@
-import React from "react";
-import PaypalExpressBtn from "react-paypal-express-checkout";
-import {useDispatch} from "react-redux";
-import {CartCreators} from "../../store/ducks";
+//  Import this to work
+//  import PaypalExpressBtn from "react-paypal-express-checkout";
+import { useDispatch } from "react-redux";
+import { CartCreators } from "../../store/ducks";
+
+// ? --DEPRECATED prefer v2
 
 export default function V1Paypal({total}) {
   const dispatch = useDispatch();
@@ -9,7 +11,6 @@ export default function V1Paypal({total}) {
     // Congratulation, it came here means everything's fine!
     console.log("The payment was succeeded!", payment);
     dispatch(CartCreators.clearCart());
-    // dispatch()
     // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
   };
 
@@ -43,14 +44,14 @@ export default function V1Paypal({total}) {
 
   // NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
   return (
-    <PaypalExpressBtn
-      env={env}
-      client={client}
-      currency={currency}
-      total={total}
-      onError={onError}
-      onSuccess={onSuccess}
-      onCancel={onCancel}
-    />
+    // <PaypalExpressBtn
+    //   env={env}
+    //   client={client}
+    //   currency={currency}
+    //   total={total}
+    //   onError={onError}
+    //   onSuccess={onSuccess}
+    //   onCancel={onCancel}
+    // />
   );
 }
