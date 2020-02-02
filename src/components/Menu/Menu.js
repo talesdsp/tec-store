@@ -1,45 +1,81 @@
 import React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
+import {FilterCreators} from "../../store/ducks";
 import {A} from "../../styled/ELEMENTS/";
 
-export function SideMenu({open, items}) {
+export const SideMenu = React.memo(function SideMenu({open, items}) {
+  const dispatch = useDispatch();
+
+  const [{products}] = useSelector((state) => [state.ProductReducer]);
+
+  let brands = products.map((v) => v.company.toLowerCase());
+
+  const uniqueBrands = brands.filter((v, i, s) => s.indexOf(v) === i);
+
+  let history = useHistory();
+
+  const gotoFilter = (u) => {
+    dispatch(FilterCreators.filter(u));
+    history.push("/");
+  };
+
+  const gotoProduct = (id) => {
+    history.push("/details/" + id);
+  };
+
   return (
     <Menu open={open}>
-      <Content>
-        <Item to="">Home</Item>
-        <Item to="">About</Item>
-        <Item to="">Cart</Item>
-        <Item to="">Privacy</Item>
-      </Content>
+      <h1>Smartphones</h1>
+
+      {uniqueBrands.map((u, ui) => (
+        <Section key={ui}>
+          <h2 onClick={() => gotoFilter(u)}>{u}</h2>
+          <ul>
+            {products.map((p) =>
+              p.company.toLowerCase() === u ? (
+                <li key={p.id} onClick={() => gotoProduct(p.id)}>
+                  {p.name}
+                </li>
+              ) : (
+                <div></div>
+              )
+            )}
+          </ul>
+        </Section>
+      ))}
     </Menu>
   );
-}
+});
 
 const Menu = styled.div`
   position: fixed;
   left: -180px;
   opacity: 1;
   top: 0;
-  background-image: linear-gradient(135deg, #338, #335);
+  background-image: linear-gradient(120deg, #333388fa, #333355fa);
   transition: all 0.5s ease-out;
   display: block;
   height: 100vh;
   font-size: 1.2rem;
   overflow: hidden;
   width: 180px;
-  z-index: 2;
-
+  z-index: 3;
   ${(props) =>
     props.open &&
     css`
       left: 0;
     `}
-  @media(min-width: 768px) {
-    display: none;
+  @media (min-width: 768px) {
+    position: absolute;
+    background-color: #eee;
+    left: 0;
+    top: 215px;
   }
 `;
 
-const Content = styled.div`
+const Section = styled.div`
   flex-direction: column;
   margin: 0;
   display: flex;
@@ -50,6 +86,7 @@ const Content = styled.div`
 const Item = styled(A)`
   padding: 10px 30px;
   flex: 1;
+  color: #fff;
   &:hover {
     color: #000;
     background-color: orange;
@@ -79,7 +116,7 @@ const Clickable = styled.div`
   left: 5vw;
   cursor: pointer;
   margin-right: 10px;
-  z-index: 1;
+  z-index: 2;
   transition: all 0.5s ease-out;
   border-radius: 50%;
 
@@ -90,7 +127,6 @@ const Clickable = styled.div`
   ${(props) =>
     props.open &&
     css`
-      background-color: #336;
       left: 180px;
     `}
 

@@ -1,36 +1,48 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 import ProductsList from "../../components/Products/Products";
+import {FilterCreators} from "../../store/ducks";
 
 export default function HomePage() {
-  const {products} = useSelector((state) => state.ProductReducer);
+  const [{products}, {filter}] = useSelector((state) => [
+    state.ProductReducer,
+    state.FilterReducer
+  ]);
+
+  const dispatch = useDispatch();
 
   let brands = products.map((v) => v.company.toLowerCase());
 
   const uniqueBrands = brands.filter((v, i, s) => s.indexOf(v) === i);
+
+  const filterProducts = (evt) => dispatch(FilterCreators.filter(evt.target.value));
 
   return (
     <React.Fragment>
       <Title></Title>
       <Filter>
         Filter by Brand:
-        <Select>
+        <Select onChange={filterProducts} value={filter}>
+          <Option value="all">Show All</Option>
           {uniqueBrands.map((v, i) => (
-            <option style={{textTransform: "capitalize"}} key={i} value={v}>
+            <Option key={i} value={v}>
               {v}
-            </option>
+            </Option>
           ))}
         </Select>
       </Filter>
 
       <Container>
-        <ProductsList />
+        <ProductsList filter={filter} />
       </Container>
     </React.Fragment>
   );
 }
 
+const Option = styled.option`
+  text-transform: capitalize;
+`;
 const Container = styled.div`
   @media (min-width: 768px) {
     width: 100vw;
