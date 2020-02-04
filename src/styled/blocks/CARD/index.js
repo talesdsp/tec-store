@@ -46,8 +46,15 @@ const CARD = styled.div`
       props.CART &&
       css`
         margin: 0;
-        max-width: calc(100vw - 330px);
+        max-width: calc(100vw - 360px);
         height: 120px;
+      `}
+  }
+  @media (min-width: 1000px) {
+    ${(props) =>
+      props.CART &&
+      css`
+        max-width: calc(100vw - 460px);
       `}
   }
 `;
