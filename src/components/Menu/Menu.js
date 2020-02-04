@@ -2,13 +2,12 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
-import {FilterCreators} from "../../store/ducks";
-import {A} from "../../styled/ELEMENTS/";
+import {FilterCreators, MenuCreators} from "../../store/ducks";
 
-export const SideMenu = React.memo(function SideMenu({open, items}) {
+export function SideMenu({MOBILE, PC}) {
   const dispatch = useDispatch();
 
-  const [{products}] = useSelector((state) => [state.ProductReducer]);
+  const [{products}, open] = useSelector((state) => [state.ProductReducer, state.MenuReducer]);
 
   let brands = products.map((v) => v.company.toLowerCase());
 
@@ -17,61 +16,112 @@ export const SideMenu = React.memo(function SideMenu({open, items}) {
   let history = useHistory();
 
   const gotoFilter = (u) => {
+    dispatch(MenuCreators.close());
     dispatch(FilterCreators.filter(u));
     history.push("/");
   };
 
   const gotoProduct = (id) => {
+    dispatch(MenuCreators.close());
     history.push("/details/" + id);
   };
 
+  const gotoHome = () => {
+    dispatch(MenuCreators.close());
+    dispatch(FilterCreators.filter("all"));
+    history.push("/");
+  };
+
   return (
-    <Menu open={open}>
-      <h1>Smartphones</h1>
+    <Menu MOBILE={MOBILE} PC={PC} open={open}>
+      <Category onClick={gotoHome}>Smartphones</Category>
+
+      {/* take 1st brand. return all products made by them. go to next. repeat.  */}
 
       {uniqueBrands.map((u, ui) => (
         <Section key={ui}>
-          <h2 onClick={() => gotoFilter(u)}>{u}</h2>
-          <ul>
-            {products.map((p) =>
-              p.company.toLowerCase() === u ? (
-                <li key={p.id} onClick={() => gotoProduct(p.id)}>
-                  {p.name}
-                </li>
-              ) : (
-                <div></div>
-              )
+          <Brand onClick={() => gotoFilter(u)}>{u}</Brand>
+          <Ul>
+            {products.map(
+              (p) =>
+                p.company.toLowerCase() === u && (
+                  <Li MOBILE={MOBILE} PC={PC} key={p.id} onClick={() => gotoProduct(p.id)}>
+                    {p.name}
+                  </Li>
+                )
             )}
-          </ul>
+          </Ul>
         </Section>
       ))}
     </Menu>
   );
-});
+}
 
 const Menu = styled.div`
-  position: fixed;
-  left: -180px;
-  opacity: 1;
-  top: 0;
-  background-image: linear-gradient(120deg, #333388fa, #333355fa);
-  transition: all 0.5s ease-out;
-  display: block;
-  height: 100vh;
-  font-size: 1.2rem;
-  overflow: hidden;
-  width: 180px;
-  z-index: 3;
   ${(props) =>
-    props.open &&
+    props.MOBILE &&
     css`
-      left: 0;
+      position: fixed;
+      left: -190px;
+      opacity: 1;
+      top: 0;
+      padding-top: 20px;
+      background-image: linear-gradient(#333388 0%, #333388 80%, #333355 100%);
+      transition: all 0.5s ease-out;
+      display: block;
+      height: 100vh;
+      font-size: 1.2rem;
+      overflow: auto;
+      margin-right: -100px;
+      width: 190px;
+      z-index: 9999;
+
+      ${(props) =>
+        props.open === true &&
+        css`
+          left: 0;
+        `}
+
+      @media(min-width: 768px) {
+        display: none;
+      }
     `}
+  ${(props) =>
+    props.PC &&
+    css`
+      display: none;
+
+      @media (min-width: 768px) {
+        width: 180px;
+        display: block;
+        position: absolute;
+        background-image: unset;
+        background-color: #eee;
+        left: 0;
+        border-radius: 5px;
+        height: max-content;
+        background-color: #eee;
+        overflow: hidden;
+      }
+    `}
+`;
+
+const Category = styled.h1`
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin: 0;
+  padding: 10px 10px 10px 20px;
+  color: springgreen;
+
+  &:hover {
+    background-color: #335;
+  }
+
   @media (min-width: 768px) {
-    position: absolute;
-    background-color: #eee;
-    left: 0;
-    top: 215px;
+    color: #3784d2;
+    &:hover {
+      background-color: #fff;
+    }
   }
 `;
 
@@ -80,22 +130,58 @@ const Section = styled.div`
   margin: 0;
   display: flex;
   list-style: none;
-  padding-top: 20px;
 `;
 
-const Item = styled(A)`
-  padding: 10px 30px;
-  flex: 1;
-  color: #fff;
+const Brand = styled.h2`
+  font-size: 1.2rem;
+  margin: 0 0 0 20px;
+
+  padding: 10px 10px;
+
+  cursor: pointer;
+  text-transform: capitalize;
+  color: springgreen;
+
   &:hover {
-    color: #000;
-    background-color: orange;
+    background-color: #335;
+  }
+  @media (min-width: 768px) {
+    color: #3784d2;
+    &:hover {
+      background-color: white;
+    }
   }
 `;
 
-export function HamburguerMenu({open, setOpen}) {
-  const handleClick = (evt) => {
-    setOpen(!open);
+const Ul = styled.ul`
+  list-style: none;
+
+  margin: 0 0 5px 0;
+`;
+
+const Li = styled.li`
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  color: #fff;
+  padding: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #335;
+  }
+  @media (min-width: 768px) {
+    color: #000;
+    &:hover {
+      background-color: #fff;
+    }
+  }
+`;
+
+export function HamburguerMenu({open}) {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    open === false ? dispatch(MenuCreators.open()) : dispatch(MenuCreators.close());
   };
 
   return (
@@ -127,7 +213,7 @@ const Clickable = styled.div`
   ${(props) =>
     props.open &&
     css`
-      left: 180px;
+      left: 190px;
     `}
 
   @media (min-width: 768px) {
