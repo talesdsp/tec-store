@@ -30,19 +30,21 @@ export default function InstallmentPlan({amount}) {
 }
 
 const Amount = styled.div`
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #338;
 `;
 const Installment = styled.span`
   font-weight: bold;
-  font-size: 1.2rem;
-  color: springgreen;
+  font-size: 1.4rem;
+  width: fit-content;
+  border-radius: 5px;
+  color: #338;
   flex: 1;
 `;
 
 const Details = styled.details`
   margin: 20px 0;
-  color: #333;
+  color: #338;
 `;
 
 const Bgcolor = styled.div`
