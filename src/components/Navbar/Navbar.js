@@ -8,12 +8,14 @@ import {AddedToCart} from "../index";
 import {HamburguerMenu, SideMenu} from "../Menu/Menu";
 
 export default function Navbar() {
-  const [{items}, {status, product}, open] = useSelector((state) => [
+  const [{items}, {status, product}, open, {products}] = useSelector((state) => [
     state.CartReducer,
     state.NotificationReducer,
-    state.MenuReducer
+    state.MenuReducer,
+    state.ProductReducer
   ]);
-  let history = useHistory();
+
+  const history = useHistory();
   const dispatch = useDispatch();
 
   //burger menu
@@ -79,6 +81,49 @@ export default function Navbar() {
     );
   };
 
+  const [searched, setSearched] = useState(null);
+  const searchResults = (evt) => {
+    // escape user input
+    const raw = escapeRegExp(evt.target.value);
+
+    const regex = new RegExp(`${raw}`, "gi");
+    console.log("%c reset ----------", "font-color: red;");
+
+    // return arr of products that match the input by at least 2 characters
+    const res = products.filter((v) => {
+      const name = v.name.match(regex);
+      const brand = v.company.match(regex);
+
+      let longestBrand = "";
+      let longestName = "";
+
+      name && name.map((v) => (v.length > longestName.length ? (longestName = v) : {}));
+      brand && brand.map((v) => (v.length > longestBrand.length ? (longestBrand = v) : {}));
+
+      return longestName.length > 2 || longestBrand.length > 2;
+    });
+
+    setSearched(res);
+  };
+
+  function escapeRegExp(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  }
+
+  const [searching, setSearching] = useState(false);
+
+  const goSearching = () => {
+    setSearching(true);
+  };
+  const cancelSearching = () => {
+    setSearching(false);
+  };
+
+  const gotoDetails = (id) => {
+    history.push("/details/" + id);
+    setSearching(false);
+  };
+
   return (
     <Nav>
       <SideMenu MOBILE />
@@ -102,8 +147,35 @@ export default function Navbar() {
         <CartSummary />
       </Section>
       <Section>
+        {searching && <SHADOW onClick={cancelSearching} />}
         <Block>
-          <Search type="text" placeholder="What are you looking for ?" autoFocus />
+          <Search
+            onClick={goSearching}
+            onChange={searchResults}
+            type="text"
+            placeholder="What are you looking for ?"
+          />
+
+          {searching && searched && (
+            <Results>
+              {searched.length > 0 ? (
+                searched.map((v, i) => (
+                  <FOUND key={i} onClick={() => gotoDetails(v.id)}>
+                    <>
+                      <IMG>
+                        <img src={`${process.env.PUBLIC_URL}/${v.img}`} alt={v.name} />
+                      </IMG>
+                      <INFO>
+                        <NAME>{v.name}</NAME>
+                      </INFO>
+                    </>
+                  </FOUND>
+                ))
+              ) : (
+                <Zero>No results found :p</Zero>
+              )}
+            </Results>
+          )}
           <Icon arrow to="" className="fas fa-angle-double-right fa-3x" />
           <Button>
             Search
@@ -114,6 +186,80 @@ export default function Navbar() {
     </Nav>
   );
 }
+
+const heightin = keyframes`
+from{
+  height: 0;
+}
+to{
+  height: 60px;
+}
+
+`;
+
+const slowin = keyframes`
+from{
+  opacity:0;
+}
+to{
+  opacity:1;
+} 
+`;
+
+const Results = styled.div`
+  background-color: #fff;
+  top: 35px;
+  position: absolute;
+  margin: auto;
+  opacity: 1;
+  overflow-x: hidden;
+  border-radius: 0 0 5px 5px;
+  overflow-y: auto;
+  padding: 5px 22px;
+  max-height: 200px;
+  display: block;
+  animation: ${heightin} 0.5s linear;
+  width: 50vw;
+`;
+
+const FOUND = styled.li`
+  color: #333;
+  height: 74px;
+  list-style: none;
+  display: flex;
+  overflow: hidden;
+  cursor: pointer;
+  align-items: center;
+  animation: ${slowin} 1s linear;
+`;
+
+const IMG = styled.div`
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  img {
+    height: 100%;
+  }
+`;
+const INFO = styled.div`
+  display: block;
+  flex: 2;
+  @media (min-width: 600px) {
+    flex: 3;
+  }
+`;
+
+const NAME = styled.div`
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const Zero = styled.p`
+  color: #444;
+  cursor: auto;
+  font-size: 1.1rem;
+  animation: ${slowin} 1s linear;
+`;
 
 const Counter = styled.div`
   position: absolute;
@@ -154,7 +300,7 @@ const SUMMARY = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 5px;
-  z-index: 2;
+  z-index: 3;
   transition: all 0.5s linear;
   background-color: #fff;
 
@@ -330,12 +476,12 @@ const Block = styled.div`
   position: relative;
   width: fit-content;
   padding: 2px 5px;
-  cursor: pointer;
   border: 1px solid #338;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  border-radius: 5px;
+  border-radius: 10px;
+  z-index: 2;
   align-items: center;
   margin: 0;
 `;
@@ -444,8 +590,8 @@ const Search = styled.input`
   border: 1px solid #eee;
   line-height: 1.2rem;
   padding: 5px 21px;
-  border-radius: 2px;
+  border-radius: 5px;
+  font-size: 1rem;
+  border-color: #fff;
   margin-right: 5px;
-  @media (min-width: 500px) {
-  }
 `;
