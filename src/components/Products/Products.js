@@ -59,6 +59,8 @@ export const ProductItem = React.memo(function ProductItem({
   // const [stars, updateStars] = useState(0);
   const dispatch = useDispatch();
 
+  console.log(inCart);
+
   const handleClick = async () => {
     if (status === true) {
       dispatch(NotificationCreators.closeNotification(prev));
@@ -112,7 +114,7 @@ export const ProductItem = React.memo(function ProductItem({
       {!CART && (
         <>
           <Add disabled={inCart ? true : false} onClick={handleClick}>
-            <TextOrIcon inCart={inCart} color="#338" />
+            <TextOrIcon inCart={inCart} color="#fff" />
           </Add>
         </>
       )}
@@ -127,11 +129,12 @@ const Add = styled(ADD_BUTTON)`
   height: 35px;
   border-radius: 0.5rem 0 0 0;
   width: 60px;
-  box-shadow: 5px 5px 9px #333;
+  background-color: #338;
   z-index: 1;
   ${(props) =>
     props.disabled &&
     css`
+      background-color: unset;
       box-shadow: unset;
     `}
 `;
