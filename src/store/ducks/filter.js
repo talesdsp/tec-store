@@ -11,7 +11,7 @@ export const INITIAL_STATE = Immutable({
   filter: "all"
 });
 
-const filter = (state, action) => {
+const filter = (state = INITIAL_STATE, action) => {
   return {filter: action.value};
 };
 

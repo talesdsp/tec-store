@@ -1,6 +1,7 @@
 import {combineReducers} from "redux";
 import CartReducer, {CartCreators} from "./cart";
 import FilterReducer, {FilterCreators} from "./filter";
+import MenuReducer, {MenuCreators} from "./menu";
 import NotificationReducer, {NotificationCreators} from "./notification";
 import ProductReducer, {ProductCreators} from "./products";
 import UserReducer, {UserCreators} from "./user";
@@ -16,7 +17,8 @@ const RootReducer = combineReducers({
   UserReducer,
   CartReducer,
   NotificationReducer,
-  FilterReducer
+  FilterReducer,
+  MenuReducer
 });
 
 export {
@@ -25,5 +27,6 @@ export {
   ProductCreators,
   UserCreators,
   NotificationCreators,
-  FilterCreators
+  FilterCreators,
+  MenuCreators
 };

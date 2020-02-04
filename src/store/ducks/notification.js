@@ -15,10 +15,10 @@ export const INITIAL_STATE = Immutable({
 });
 
 const openNotification = (state = INITIAL_STATE, action) => {
-  return {status: true, product: action.product, prev: state.product};
+  return {status: true, product: action.product, prev: action.prev};
 };
 const closeNotification = (state = INITIAL_STATE, action) => {
-  return {status: false, product: action.product, prev: state.product};
+  return {status: false, product: action.product, prev: action.prev};
 };
 
 const NotificationReducer = createReducer(INITIAL_STATE, {
