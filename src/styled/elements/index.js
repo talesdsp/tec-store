@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
-import styled, {keyframes} from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 
 export const A = styled(Link)`
   display: block;
@@ -24,6 +24,12 @@ export const TEXT = styled.p`
   font-size: 1rem;
   line-height: 1.3rem;
   margin: 0;
+  ${(props) =>
+    props.strong &&
+    css`
+      text-transform: uppercase;
+      font-weight: bold;
+    `}
 `;
 
 // TODO: fix
@@ -107,16 +113,17 @@ const Ripple = styled.span`
 `;
 
 export const ADD_BUTTON = styled.button`
-  position: absolute;
+  all: unset;
   cursor: ${(props) => (props.disabled === true ? "auto" : "grab")};
   margin: 0;
-  right: 0;
-  bottom: 0;
-  background: #fff;
-  border: 1px solid #eee;
-  border-bottom-right-radius: 5px;
-  width: 66px;
-  height: 30px;
-  border-top-left-radius: 0.5rem;
-  transition: transform 0.5s ease-in-out;
+  padding: 0;
+  border-color: transparent;
+  position: relative;
+  border-radius: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex: 1;
+  padding: 0;
+  border: none;
 `;
