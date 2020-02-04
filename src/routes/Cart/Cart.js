@@ -5,7 +5,8 @@ import styled, {css} from "styled-components";
 import CarouselSection from "../../components/Carousel/Carousel";
 import InstallmentPlan from "../../components/Installment/Installment";
 import {ProductItem} from "../../components/Products/Products";
-import {CartCreators} from "../../store/ducks";
+import {CartCreators, ProductCreators} from "../../store/ducks";
+import {ADD_BUTTON} from "../../styled/ELEMENTS";
 import V2Paypal from "./V2Paypal";
 
 export default function CartPage({history}) {
@@ -49,7 +50,7 @@ const Window = styled.div`
 
 const Main = styled.main`
   position: relative;
-  min-height: 500px;
+  min-height: 600px;
 `;
 
 const Section = styled.div`
@@ -77,7 +78,7 @@ const Head = styled.h1`
     ${(props) =>
       props.EMPTY &&
       css`
-        margin-top: 100px;
+        margin-top: 70px;
       `}
   }
 
@@ -115,18 +116,20 @@ const CartItem = memo(function CartItem({item, index}) {
   };
 
   const history = useHistory();
-  const handleClick = () => {
+  const gotoDetails = () => {
     history.push("/details/" + item.id);
   };
 
+  const discardThis = () => {
+    dispatch(CartCreators.removeFromCart(item));
+    dispatch(ProductCreators.outsideCart(item));
+  };
+
   return (
-    <ProductItem
-      CART
-      style={{pointerEvents: "none", cursor: "pointer"}}
-      product={item}
-      onClick={handleClick}
-    >
-      <Bin onClick={() => dispatch(CartCreators.removeFromCart(item))}> remover </Bin>
+    <ProductItem CART product={item} onClick={gotoDetails}>
+      <Bin onClick={discardThis}>
+        <i className="fas fa-trash fa-lg"></i>
+      </Bin>
 
       <Inline>
         <Quantity>
@@ -147,14 +150,18 @@ const CartItem = memo(function CartItem({item, index}) {
   );
 });
 
-const Bin = styled.button`
+const Bin = styled(ADD_BUTTON)`
   position: absolute;
   right: 0;
   top: 0;
   z-index: 1;
+  height: 30px;
+  width: 60px;
+  background-color: red;
+  border-radius: 0 0 0 5px;
+  color: #fff;
   @media (min-width: 768px) {
-    top: unset;
-    bottom: 100px;
+    top: 0;
   }
 `;
 
@@ -165,7 +172,7 @@ const Inline = styled.div`
   bottom: 0;
   right: 0;
   margin-left: 120px;
-  background-image: linear-gradient(120deg, #338, springgreen);
+  background-image: linear-gradient(120deg, #338, #335);
   align-items: center;
   border-radius: 5px 0 0 0;
   padding: 6px;
@@ -194,7 +201,6 @@ const Unit = styled.div`
   flex: 1;
   padding-left: 5px;
   color: #fff;
-  text-shadow: 0px -0px 8px #fff, 2px 2px 8px #000;
   font-weight: bold;
 `;
 
@@ -224,6 +230,9 @@ const Container = styled.div`
     top: 0;
     right: 0;
     border-radius: 5px;
-    max-width: 400px;
+    width: 300px;
+  }
+  @media (min-width: 1000px) {
+    width: 400px;
   }
 `;

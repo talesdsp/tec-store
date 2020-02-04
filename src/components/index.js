@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 import {NotificationCreators} from "../store/ducks";
-import * as N from "../styled/blocks/Notification";
+import * as N from "../styled/blocks/NOTIFICATION";
 import {TEXT} from "../styled/ELEMENTS";
 
 export const AddedToCart = ({product}) => {
@@ -58,7 +58,7 @@ export const TextOrIcon = ({inCart, color, details, price}) => {
       </>
     );
   }
-  return inCart ? (
+  return inCart === true ? (
     <Confirmed className="fas fa-check-circle fa-2x" />
   ) : (
     <i style={{color: color}} className="fas fa-cart-arrow-down fa-lg"></i>
