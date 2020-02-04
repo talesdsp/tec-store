@@ -12,7 +12,7 @@ export default function ProductsList({filter}) {
     state.ProductReducer,
     state.NotificationReducer
   ]);
-  console.log(filter);
+
   return (
     <>
       <Section>
@@ -33,13 +33,17 @@ export default function ProductsList({filter}) {
 const Section = styled.section`
   @media (min-width: 768px) {
     display: flex;
-    width: 90vw;
-    margin: 0 5vw;
+    width: 70vw;
+    margin: 0 0 0 200px;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
   }
-  ${(props) => props.mode === "carousel" && css``}
+
+  @media (min-width: 1000px) {
+    margin-left: 16vw;
+  }
+  ${(props) => props.mode === "CAROUSEL" && css``}
 `;
 
 export const ProductItem = React.memo(function ProductItem({
@@ -48,7 +52,8 @@ export const ProductItem = React.memo(function ProductItem({
   inCart,
   status,
   prev,
-  __cart
+  CART,
+  CAROUSEL
 }) {
   const {id, name, img, info, price, company, reviews} = product;
   // const [stars, updateStars] = useState(0);
@@ -65,19 +70,24 @@ export const ProductItem = React.memo(function ProductItem({
 
   let history = useHistory();
 
-  const goDetails = () => !__cart && history.push(`/details/${id}`);
+  const goDetails = () => !CART && history.push(`/details/${id}`);
 
   return (
-    <C.default>
+    <C.default CART={CART} CAROUSEL={CAROUSEL}>
       {/* <Ripplefy> */}
-      <C.__CONTAINER onClick={goDetails}>
-        <C.__HEADER>
-          <C.__IMAGE src={img} alt="product" />
+      <C.__CONTAINER CART={CART} CAROUSEL={CAROUSEL} onClick={goDetails}>
+        <C.__HEADER CART={CART} CAROUSEL={CAROUSEL}>
+          <C.__IMAGE
+            CART={CART}
+            CAROUSEL={CAROUSEL}
+            src={process.env.PUBLIC_URL + "/" + img}
+            alt="product"
+          />
         </C.__HEADER>
 
-        <C.__INFO>
+        <C.__INFO CART={CART} CAROUSEL={CAROUSEL}>
           <C.__BRAND>{company}</C.__BRAND>
-          <C.__NAME>{name}</C.__NAME>
+          <C.__NAME CART={CART}>{name}</C.__NAME>
 
           <C.__REVIEWS>
             {
@@ -88,28 +98,40 @@ export const ProductItem = React.memo(function ProductItem({
             }{" "}
             {reviews} reviews
           </C.__REVIEWS>
-
-          {!__cart ? (
+          {!CART && (
             <C.__PRICE>
               {price.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}
             </C.__PRICE>
-          ) : (
-            children
           )}
-          <C.__DESCRIPTION>{info.substring(0, 50)}...</C.__DESCRIPTION>
+
+          <C.__DESCRIPTION CAROUSEL={CAROUSEL}>{info.substring(0, 50)}...</C.__DESCRIPTION>
         </C.__INFO>
         {/* </Ripplefy> */}
       </C.__CONTAINER>
-
-      {!__cart && (
-        <Add disabled={inCart ? true : false} onClick={handleClick}>
-          <TextOrIcon inCart={inCart} color="#338" />
-        </Add>
+      {CART && children}
+      {!CART && (
+        <>
+          <Add disabled={inCart ? true : false} onClick={handleClick}>
+            <TextOrIcon inCart={inCart} color="#338" />
+          </Add>
+        </>
       )}
     </C.default>
   );
 });
 
 const Add = styled(ADD_BUTTON)`
-  box-shadow: 5px 5px 7px #000;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 35px;
+  border-radius: 0.5rem 0 0 0;
+  width: 60px;
+  box-shadow: 5px 5px 9px #333;
+  z-index: 1;
+  ${(props) =>
+    props.disabled &&
+    css`
+      box-shadow: unset;
+    `}
 `;
