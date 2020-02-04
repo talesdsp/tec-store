@@ -1,10 +1,13 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import styled from "styled-components";
-import {TextOrIcon} from "../../components";
-import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks/";
-import {ADD_BUTTON, TEXT} from "../../styled/ELEMENTS";
+import styled, {css} from "styled-components";
+import CarouselSection from "../../components/Carousel/Carousel";
+import InstallmentPlan from "../../components/Installment/Installment";
+import {SideMenu} from "../../components/Menu/Menu";
+import MobileNavigation from "../../components/MobileNavigation/MobileNavigation";
+import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
+import {TEXT} from "../../styled/ELEMENTS";
 
 export default function DetailsPage({match}) {
   const [{status}, {products}] = useSelector((state) => [
@@ -12,41 +15,43 @@ export default function DetailsPage({match}) {
     state.ProductReducer
   ]);
 
-  const product = products[match.params.product - 1];
+  const thisProduct = products[match.params.product - 1];
+  const {img, info, price, name, inCart, details} = thisProduct;
+
   const dispatch = useDispatch();
-  let history = useHistory();
 
-  const {company, img, info, price, name, inCart, details} = product;
-
+  const history = useHistory();
   const handleClick = () => {
-    dispatch(CartCreators.addToCart(product));
-    dispatch(ProductCreators.insideCart(product));
-    dispatch(NotificationCreators.openNotification(product));
-
-    setTimeout(() => status && dispatch(NotificationCreators.closeNotification(product)), 3000);
+    dispatch(CartCreators.addToCart(thisProduct));
+    dispatch(ProductCreators.insideCart(thisProduct));
+    dispatch(NotificationCreators.openNotification(thisProduct));
+    history.push("/cart");
   };
-
-  const goBack = (evt) => history.push("/");
 
   return (
     <Details>
-      <Section>
-        <Title>{name}</Title>
-        <Image src={`${process.env.PUBLIC_URL}/${img}`} alt="product" />
+      {/* // ! Fixed left side menu /  pc only */}
+      <SideMenu PC />
+
+      <Section main>
+        <Image src={`${process.env.PUBLIC_URL}/${img}`} alt={name} />
+
+        <Cart>
+          <InstallmentPlan amount={price} />
+          <Btn disabled={inCart ? true : false} onClick={handleClick}>
+            Buy
+          </Btn>
+        </Cart>
       </Section>
 
+      {/* //! product description */}
       <Section>
-        <Subhead>Model:</Subhead>
-        <TEXT>{name}</TEXT>
-
-        <Subhead>Made by:</Subhead>
-        <TEXT>{company}</TEXT>
-
-        <Subhead>Price:</Subhead>
-        <TEXT>{price.toLocaleString("pt-br", {style: "currency", currency: "BRL"})}</TEXT>
+        <Title MOBILE strong>
+          {name}
+        </Title>
 
         <Subhead>Description:</Subhead>
-        <TEXT>{info}</TEXT>
+        <TEXT style={{color: "#444"}}>{info}</TEXT>
 
         <Subhead>Details:</Subhead>
         <Table>
@@ -58,20 +63,98 @@ export default function DetailsPage({match}) {
           ))}
         </Table>
 
-        <CTA>
-          <Back onClick={goBack}>
-            <i class="fas fa-angle-left fa-2x"></i>
-          </Back>
-          <Add disabled={inCart ? true : false} onClick={handleClick}>
-            <TextOrIcon inCart={inCart} color="#fff" />
-          </Add>
-        </CTA>
+        {/*  // ! navigation buttons. ? fixed bottom, mobile only */}
+        <MobileNavigation thisProduct={thisProduct} />
       </Section>
+
+      {/* // ! carousel on bottom page */}
+      <CarouselSection status={status} products={products} />
+
+      {/* // ! end of page */}
     </Details>
   );
 }
+
+const Section = styled.section`
+  margin: auto;
+  display: block;
+  position: relative;
+  @media (min-width: 768px) {
+    margin-left: 180px;
+
+    ${(props) =>
+      props.main &&
+      css`
+        display: flex;
+        flex-direction: row;
+      `};
+  }
+`;
+
+const Image = styled.img`
+  width: 100%;
+  max-width: 400px;
+
+  @media (min-width: 540px) {
+    margin: 0 10vw;
+  }
+
+  @media (min-width: 768px) {
+    margin: 0;
+    flex: 2;
+  }
+`;
+
+const Cart = styled.div`
+  display: none;
+
+  @media (min-width: 768px) {
+    right: 0;
+    position: absolute;
+    z-index: 2;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+`;
+
+const Title = styled.h1`
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 40px;
+  @media (min-width: 768px) {
+    flex: 1;
+  }
+`;
+
+const Subhead = styled.h2`
+  color: #333;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const Btn = styled.button`
+  padding: 8px 21px;
+  border: none;
+  background-color: orange;
+  color: black;
+  font-size: 1.4rem;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5em;
+  ${(props) =>
+    props.disabled &&
+    css`
+      cursor: auto;
+    `}
+`;
+
 const Details = styled.div`
   padding: 102px 20px 20px;
+  position: relative;
 
   @media (min-width: 768px) {
     padding: 20px;
@@ -79,7 +162,8 @@ const Details = styled.div`
 `;
 
 const Table = styled.section`
-  background-color: #335;
+  background-image: linear-gradient(120deg, #338, #335);
+
   border-radius: 5px;
   margin: 20px 0;
 `;
@@ -99,7 +183,7 @@ const Label = styled.div`
   margin-left: 20px;
   width: max-content;
   flex: 1;
-  color: #3c91e6;
+  color: springgreen;
 `;
 
 const Answer = styled(TEXT)`
@@ -107,62 +191,3 @@ const Answer = styled(TEXT)`
   flex: 3;
   color: #fff;
 `;
-
-const Section = styled.section``;
-
-const Title = styled.h2`
-  color: #3c91e6;
-`;
-
-const Image = styled.img`
-  width: 100%;
-`;
-
-const Subhead = styled.h2`
-  color: #3c91e6;
-  margin-bottom: 5px;
-`;
-
-const CTA = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 10.1vh;
-  margin: 0;
-  padding: 0;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  background-image: linear-gradient(90deg, #335, #338);
-  flex-direction: row;
-  justify-content: center;
-  @media (min-width: 768px) {
-    height: 10vh;
-    width: unset;
-    bottom: unset;
-    position: relative;
-  }
-`;
-
-// ? The code below inherits the style then appends the css in JS
-const Back = styled(ADD_BUTTON)((props) => ({
-  // backgroundColor: "#335",
-  position: "relative",
-  height: "100%",
-  backgroundColor: "transparent",
-  flex: "1",
-  padding: 0,
-  color: "#fff",
-  borderColor: "transparent",
-  borderRadius: "0",
-  cursor: "pointer"
-}));
-
-const Add = styled(ADD_BUTTON)((props) => ({
-  backgroundColor: "transparent",
-  padding: 0,
-  height: "100%",
-  borderColor: "transparent",
-  position: "relative",
-  borderRadius: " 0",
-  flex: "1"
-}));
