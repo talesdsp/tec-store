@@ -1,12 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 
 export default function InstallmentPlan({amount}) {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => {
+    setWidth(window.innerWidth);
+  });
   return (
     <>
       <Amount>{amount.toLocaleString("pt-br", {style: "currency", currency: "BRL"})}</Amount>
       <Installment>Up to 12x interest-free payments</Installment>
-      <Details>
+      <Details open={width >= 1000}>
         <Bgcolor>
           <Parcels>
             {[...Array(12)].map((v, i) => (
@@ -26,17 +31,18 @@ export default function InstallmentPlan({amount}) {
 
 const Amount = styled.div`
   font-size: 2rem;
-  color: #3784d2;
+  color: #338;
 `;
 const Installment = styled.span`
-  color: #3784d2;
   font-weight: bold;
   font-size: 1.2rem;
+  color: springgreen;
   flex: 1;
 `;
 
 const Details = styled.details`
-  padding: 20px 20px 30px 20px;
+  margin: 20px 0;
+  color: #333;
 `;
 
 const Bgcolor = styled.div`
@@ -52,6 +58,7 @@ const Parcels = styled.ul`
   padding: 10px;
   padding-left: 20px;
   flex-wrap: wrap;
+  margin-bottom: 0;
 `;
 
 const Parcel = styled.li`
