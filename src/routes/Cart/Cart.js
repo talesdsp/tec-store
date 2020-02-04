@@ -1,32 +1,26 @@
 import React, {memo} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
+import CarouselSection from "../../components/Carousel/Carousel";
+import InstallmentPlan from "../../components/Installment/Installment";
 import {ProductItem} from "../../components/Products/Products";
-import {CartCreators} from "../../store/ducks/cart";
+import {CartCreators} from "../../store/ducks";
+import V2Paypal from "./V2Paypal";
 
 export default function CartPage({history}) {
-  const [{items}, {products}, {status}] = useSelector((state) => [
+  const [{items}, {status}, {products}] = useSelector((state) => [
     state.CartReducer,
-    state.ProductReducer,
-    state.NotificationReducer
+    state.NotificationReducer,
+    state.ProductReducer
   ]);
-
-  function scrollLeft(evt) {
-    evt.stopPropagation();
-    if (evt.target.nextSibling) evt.target.nextSibling.scrollBy(-600, 0);
-  }
-
-  function scrollRight(evt) {
-    evt.stopPropagation();
-    if (evt.target.previousSibling) evt.target.previousSibling.scrollBy(600, 0);
-  }
-
   let total = 0;
   return (
     <Window>
       {items && items.length > 0 ? (
-        <>
-          <Head>My Cart</Head>
+        <Main>
+          <Head MOBILE>My Cart</Head>
+
           <Section>
             {items.map((item, index) => {
               total += item.price * item.quantity;
@@ -35,102 +29,74 @@ export default function CartPage({history}) {
           </Section>
 
           <Total total={total} history={history} />
-        </>
+        </Main>
       ) : (
-        <Head>There are no products in the cart</Head>
+        <>
+          <Head EMPTY>The cart is empty :p</Head>
+          <But>But you can add some! ;)</But>
+          <CarouselSection status={status} products={products} />
+        </>
       )}
-      <Section carousel>
-        <Arrow left onClick={scrollLeft}>
-          <i className="fas fa-hand-point-left fa-lg" title="Scroll Left"></i>
-        </Arrow>
-        <Scroll>
-          {products.map((v) => {
-            return <ProductItem key={v.id} product={v} status={status} inCart={v.inCart} />;
-          })}
-        </Scroll>
-        <Arrow right onClick={scrollRight}>
-          <i className="fas fa-hand-point-right fa-2x" title="Scroll Right"></i>
-        </Arrow>
-      </Section>
     </Window>
   );
 }
 
-const Arrow = styled.button`
-  display: none;
-  color: springgreen;
-  background-color: #335;
-  border-color: transparent;
-  @media (min-width: 768px) {
-    display: block;
-    border-radius: 5px;
-    padding: 20px;
-    position: absolute;
-    margin: auto 0;
-    z-index: 1;
-  }
-  i {
-    pointer-events: none;
-  }
+const Window = styled.div`
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+`;
 
-  ${(props) =>
-    props.left &&
-    css`
-      left: -20px;
-    `}
-
-  ${(props) =>
-    props.right &&
-    css`
-      right: -20px;
-    `}
+const Main = styled.main`
+  position: relative;
+  min-height: 500px;
 `;
 
 const Section = styled.div`
   display: flex;
   position: relative;
   flex-wrap: wrap;
-  ${(props) =>
-    props.carousel &&
-    css`
-      align-items: center;
-    `}
 
   @media (min-width: 768px) {
     flex-direction: row;
-    width: 60vw;
+    width: 70vw;
   }
 `;
 
-const Scroll = styled.div`
-  display: flex;
-  overflow: auto;
-  scroll-behavior: smooth;
-  flex-direction: column;
-  /* margin-bottom: -12px; */
-  scrollbar-arrow-color: #fff;
-  scrollbar-color: springgreen;
-  scrollbar-base-color: #338;
-  scrollbar-track-color: #fff;
-  ::-webkit-scrollbar-button {
-    color: red;
-  }
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
-`;
 const Head = styled.h1`
   position: relative;
   text-align: center;
-  margin-top: 103px;
+  font-size: 1.6rem;
+  margin-top: 125px;
+  margin-bottom: 0;
   padding: 20px;
+  color: #3784d2;
+
+  @media (min-width: 768px) {
+    margin-top: 20px;
+    ${(props) =>
+      props.EMPTY &&
+      css`
+        margin-top: 100px;
+      `}
+  }
+
+  ${(props) =>
+    props.EMPTY &&
+    css`
+      font-size: 1.6rem;
+      color: #444;
+      padding-bottom: 0;
+    `}
 `;
 
-const Window = styled.div`
-  width: 100%;
-  border-radius: 5px;
+const But = styled.h2`
   position: relative;
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 0;
+  color: #3784d2;
+  padding: 20px;
 `;
 
 const CartItem = memo(function CartItem({item, index}) {
@@ -148,8 +114,18 @@ const CartItem = memo(function CartItem({item, index}) {
     dispatch(CartCreators.increment(item, index));
   };
 
+  const history = useHistory();
+  const handleClick = () => {
+    history.push("/details/" + item.id);
+  };
+
   return (
-    <ProductItem __cart product={item}>
+    <ProductItem
+      CART
+      style={{pointerEvents: "none", cursor: "pointer"}}
+      product={item}
+      onClick={handleClick}
+    >
       <Bin onClick={() => dispatch(CartCreators.removeFromCart(item))}> remover </Bin>
 
       <Inline>
@@ -173,29 +149,40 @@ const CartItem = memo(function CartItem({item, index}) {
 
 const Bin = styled.button`
   position: absolute;
-  top: 0;
   right: 0;
+  top: 0;
+  z-index: 1;
+  @media (min-width: 768px) {
+    top: unset;
+    bottom: 100px;
+  }
 `;
 
 const Inline = styled.div`
   display: flex;
+  width: calc(100% - 131px);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-left: 120px;
   background-image: linear-gradient(120deg, #338, springgreen);
   align-items: center;
-  border-radius: 5px;
+  border-radius: 5px 0 0 0;
   padding: 6px;
-  width: 102%;
+  max-width: 200px;
   @media (min-width: 768px) {
-    width: 98%;
+    margin-left: 0;
   }
 `;
 
 const Quantity = styled.div`
-  flex: 3;
   display: flex;
+  flex: 2;
   border-radius: 5px;
 `;
 
 const Btn = styled.button`
+  cursor: pointer;
   background-color: transparent;
   border-color: transparent;
   width: 33.3%;
@@ -219,76 +206,24 @@ function Total({total, history}) {
     <Container>
       <button onClick={() => dispatch(CartCreators.clearCart())}></button>
 
-      <Amount>{total.toLocaleString("pt-br", {style: "currency", currency: "BRL"})}</Amount>
-      <Installment>Up to 12x interest-free payments</Installment>
-      <Details>
-        <Bgcolor>
-          <Parcels>
-            {[...Array(12)].map((v, i) => (
-              <Parcel key={i}>
-                <Times>{i + 1}X </Times>
-                <Value>
-                  {(total / (i + 1)).toLocaleString("pt-br", {style: "currency", currency: "BRL"})}
-                </Value>
-              </Parcel>
-            ))}
-          </Parcels>
-        </Bgcolor>
-      </Details>
-      {/* <V2Paypal total={total} history={history} checklist={checklist} /> */}
+      <InstallmentPlan amount={total} />
+
+      <V2Paypal total={total} history={history} checklist={checklist} />
     </Container>
   );
 }
-///////////
-const Details = styled.details`
-  padding: 20px 20px 30px 20px;
-`;
-
-const Bgcolor = styled.div`
-  border-radius: 5px;
-  background-image: linear-gradient(120deg, #338, #335);
-`;
-
-const Summary = styled.summary``;
-
-const Parcels = styled.ul`
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  height: 156px;
-  padding: 10px;
-  padding-left: 20px;
-  flex-wrap: wrap;
-`;
-
-const Parcel = styled.li`
-  padding-top: 5px;
-  margin-right: 10px;
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-`;
 
 const Container = styled.div`
   background-color: #fff;
-  padding: 40px;
-`;
-
-const Amount = styled.div`
-  font-size: 2rem;
-  color: var(--buy-color);
-`;
-const Installment = styled.span`
-  color: red;
-  flex: 1;
-`;
-
-const Times = styled.div`
-  flex: 1;
-  color: springgreen;
-`;
-
-const Value = styled.div`
-  flex: 1;
-  color: #fff;
+  padding: 20px;
+  margin-top: 80px;
+  @media (min-width: 768px) {
+    margin-top: 70px;
+    margin-bottom: 100px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 5px;
+    max-width: 400px;
+  }
 `;
