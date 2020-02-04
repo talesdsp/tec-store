@@ -6,7 +6,7 @@ import CarouselSection from "../../components/Carousel/Carousel";
 import InstallmentPlan from "../../components/Installment/Installment";
 import {ProductItem} from "../../components/Products/Products";
 import {CartCreators, ProductCreators} from "../../store/ducks";
-import {ADD_BUTTON} from "../../styled/ELEMENTS";
+import "./bin.css";
 import V2Paypal from "./V2Paypal";
 
 export default function CartPage({history}) {
@@ -121,15 +121,26 @@ const CartItem = memo(function CartItem({item, index}) {
   };
 
   const discardThis = () => {
-    dispatch(CartCreators.removeFromCart(item));
-    dispatch(ProductCreators.outsideCart(item));
+    setTimeout(() => {
+      dispatch(CartCreators.removeFromCart(item));
+      dispatch(ProductCreators.outsideCart(item));
+    }, 1000);
   };
 
   return (
     <ProductItem CART product={item} onClick={gotoDetails}>
-      <Bin onClick={discardThis}>
-        <i className="fas fa-trash fa-lg"></i>
-      </Bin>
+      <div id="app-cover" onClick={discardThis}>
+        <input type="checkbox" id="checkbox" />
+        <div id="bin-icon">
+          <div id="lid"></div>
+          <div id="box">
+            <div id="box-inner">
+              <div id="bin-lines"></div>
+            </div>
+          </div>
+        </div>
+        <div id="layer"></div>
+      </div>
 
       <Inline>
         <Quantity>
@@ -149,21 +160,6 @@ const CartItem = memo(function CartItem({item, index}) {
     </ProductItem>
   );
 });
-
-const Bin = styled(ADD_BUTTON)`
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 1;
-  height: 30px;
-  width: 60px;
-  background-color: red;
-  border-radius: 0 0 0 5px;
-  color: #fff;
-  @media (min-width: 768px) {
-    top: 0;
-  }
-`;
 
 const Inline = styled.div`
   display: flex;
@@ -205,13 +201,10 @@ const Unit = styled.div`
 `;
 
 function Total({total, history}) {
-  const dispatch = useDispatch();
   const checklist = useSelector((state) => state.CartReducer);
 
   return (
     <Container>
-      <button onClick={() => dispatch(CartCreators.clearCart())}></button>
-
       <InstallmentPlan amount={total} />
 
       <V2Paypal total={total} history={history} checklist={checklist} />

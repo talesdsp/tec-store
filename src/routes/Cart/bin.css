@@ -1,0 +1,243 @@
+/* Copyright (c) 2020 by Himalaya Singh (https://codepen.io/himalayasingh/pen/yxrYNE)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+
+#app-cover {
+  position: absolute;
+  width   : 106px;
+  height  : 106px;
+
+  background-color: #F44336;
+
+  border-radius: 0 0 0 .5em;
+
+  overflow : hidden;
+  transform: scale(.4);
+  right    : -32px;
+  top      : -32px;
+
+  @media (min-width: 768px) {
+    top: 0;
+  }
+}
+
+#checkbox {
+  position: absolute;
+  top     : 0;
+  right   : 0;
+  bottom  : 0;
+  left    : 0;
+  width   : 100%;
+  height  : 100%;
+  margin  : 0;
+  opacity : 0;
+  z-index : 3;
+}
+
+#bin-icon {
+  position     : absolute;
+  top          : 50%;
+  right        : 0;
+  left         : 0;
+  width        : 42px;
+  height       : 58px;
+  margin       : -29px auto 0 auto;
+  border-radius: 50%;
+  z-index      : 2;
+}
+
+#lid {
+  position     : relative;
+  width        : 50px;
+  height       : 4px;
+  left         : -4px;
+  border-radius: 4px;
+}
+
+#lid:before {
+  content      : '';
+  position     : absolute;
+  top          : -4px;
+  right        : 0;
+  left         : 0;
+  width        : 10px;
+  height       : 6px;
+  margin       : 0 auto;
+  border-radius: 10px 10px 0 0;
+}
+
+#box {
+  position     : relative;
+  height       : 52px;
+  margin-top   : 2px;
+  border-radius: 0 0 8px 8px;
+}
+
+#box-inner {
+  position        : relative;
+  top             : 4px;
+  width           : 34px;
+  height          : 44px;
+  margin          : 0 auto;
+  background-color: #F44336;
+  border-radius   : 0 0 5px 5px;
+}
+
+#bin-lines {
+  position: relative;
+  top     : 7px;
+  margin  : 0 auto;
+}
+
+#bin-lines,
+#bin-lines:before,
+#bin-lines:after {
+  width        : 3px;
+  height       : 30px;
+  border-radius: 4px;
+}
+
+#bin-lines:before,
+#bin-lines:after {
+  content : '';
+  position: absolute;
+}
+
+#bin-lines:before {
+  left: -10px;
+}
+
+#bin-lines:after {
+  left: 10px;
+}
+
+#layer {
+  position        : absolute;
+  right           : -20px;
+  bottom          : -20px;
+  width           : 0;
+  height          : 0;
+  background-color: #03A9F4;
+  border-radius   : 0 0 0 50%;
+  transition      : 0.25s ease all;
+  z-index         : 1;
+}
+
+#lid,
+#lid:before,
+#box,
+#box-inner {
+  background-color: #fff;
+  transition      : 0.5s ease background-color;
+}
+
+#bin-lines,
+#bin-lines:before,
+#bin-lines:after {
+  background-color: #F44336;
+  transition      : 0.5s ease background-color;
+}
+
+#checkbox:checked~#bin-icon #lid,
+#checkbox:checked~#bin-icon #lid:before,
+#checkbox:checked~#bin-icon #box,
+#checkbox:checked~#bin-icon #box-inner {
+  background-color: #fff;
+}
+
+#checkbox:checked~#bin-icon #bin-lines,
+#checkbox:checked~#bin-icon #bin-lines:before,
+#checkbox:checked~#bin-icon #bin-lines:after {
+  background-color: #03A9F4;
+}
+
+#checkbox:checked+#bin-icon #box {
+  animation: shake 0.2s ease 0.1s;
+}
+
+#checkbox:checked+#bin-icon #lid {
+  animation: lift-up 0.8s ease 0.1s, shake_u 0.8s ease 0.1s, shake_l 0.2s ease 0.8s;
+}
+
+#checkbox:checked~#layer {
+  width : 226px;
+  height: 226px;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotateZ(3deg);
+  }
+
+  25% {
+    transform: rotateZ(0);
+  }
+
+  75% {
+    transform: rotateZ(-3deg);
+  }
+
+  100% {
+    transform: rotateZ(0);
+  }
+}
+
+@keyframes lift-up {
+  0% {
+    top: 0;
+  }
+
+  50% {
+    top: -35px;
+  }
+
+  100% {
+    top: 0;
+  }
+}
+
+@keyframes shake_u {
+  0% {
+    transform: rotateZ(0);
+  }
+
+  25% {
+    transform: rotateZ(-15deg);
+  }
+
+  50% {
+    transform: rotateZ(0deg);
+  }
+
+  75% {
+    transform: rotateZ(15deg);
+  }
+
+  100% {
+    transform: rotateZ(0);
+  }
+}
+
+@keyframes shake_l {
+  0% {
+    transform: rotateZ(0);
+  }
+
+  80% {
+    transform: rotateZ(3deg);
+  }
+
+  90% {
+    transform: rotateZ(-3deg);
+  }
+
+  100% {
+    transform: rotateZ(0);
+  }
+}
