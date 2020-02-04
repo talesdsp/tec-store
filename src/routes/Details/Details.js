@@ -101,6 +101,9 @@ const Image = styled.img`
 
   @media (min-width: 768px) {
     margin: 0;
+    width: 250px;
+  }
+  @media (min-width: 1000px) {
     flex: 2;
   }
 `;
@@ -109,14 +112,20 @@ const Cart = styled.div`
   display: none;
 
   @media (min-width: 768px) {
-    right: 0;
     position: absolute;
+    right: 0;
     z-index: 2;
     border-radius: 5px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    width: 260px;
+  }
+  @media (min-width: 1000px) {
+    width: 400px;
+  }
+  @media (min-width: 1200px) {
+    right: 5vw;
   }
 `;
 
@@ -139,8 +148,8 @@ const Subhead = styled.h2`
 const Btn = styled.button`
   padding: 8px 21px;
   border: none;
-  background-color: orange;
-  color: black;
+  background-image: linear-gradient(120deg, springgreen, #338);
+  color: #fff;
   font-size: 1.4rem;
   cursor: pointer;
   font-weight: bold;
