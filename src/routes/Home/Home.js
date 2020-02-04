@@ -1,6 +1,7 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
+import {SideMenu} from "../../components/Menu/Menu";
 import ProductsList from "../../components/Products/Products";
 import {FilterCreators} from "../../store/ducks";
 
@@ -19,7 +20,8 @@ export default function HomePage() {
   const filterProducts = (evt) => dispatch(FilterCreators.filter(evt.target.value));
 
   return (
-    <React.Fragment>
+    <Home>
+      <SideMenu PC />
       <Title></Title>
       <Filter>
         Filter by Brand:
@@ -36,9 +38,17 @@ export default function HomePage() {
       <Container>
         <ProductsList filter={filter} />
       </Container>
-    </React.Fragment>
+    </Home>
   );
 }
+
+const Home = styled.div`
+  position: relative;
+  box-sizing: border-box;
+  @media (min-width: 768px) {
+    min-height: 600px;
+  }
+`;
 
 const Option = styled.option`
   text-transform: capitalize;
@@ -54,7 +64,7 @@ const Filter = styled.div`
   display: block;
   width: fit-content;
   position: relative;
-  margin: auto;
+  margin: 30px auto;
 `;
 const Select = styled.select`
   margin-left: 10px;
