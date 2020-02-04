@@ -5,16 +5,16 @@ import {ProductItem} from "../Products/Products";
 function CarouselSection({status, products}) {
   const [width, setWidth] = useState(window.innerWidth);
 
-  window.addEventListener("resize", () => setWidth(window.innerWidth));
+  window.addEventListener("resize", async () => setWidth(window.innerWidth));
 
-  const scrollLeft = (evt) => {
+  const scrollLeft = async (evt) => {
     let l = evt.target.nextSibling.children;
 
     // conditional in case the user press this button before mounted
     if (l) l[0].scrollBy(-(width / 2), 0);
   };
 
-  const scrollRight = (evt) => {
+  const scrollRight = async (evt) => {
     let r = evt.target.previousSibling.children;
     // console.log(d.scrollWidth, d.offsetWidth, d.clientWidth);
     if (r) r[0].scrollBy(width / 2, 0);
