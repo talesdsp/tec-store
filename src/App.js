@@ -1,7 +1,6 @@
 import React from "react";
 import {Provider} from "react-redux";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import "./App.css";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import CartPage from "./routes/Cart/Cart";
