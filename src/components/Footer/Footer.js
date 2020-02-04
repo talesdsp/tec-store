@@ -1,41 +1,35 @@
 import React from "react";
-import {useHistory, useRouteMatch} from "react-router-dom";
 import styled, {css} from "styled-components";
 import paypal from "../../paypal.svg";
 import {A} from "../../styled/ELEMENTS";
 
 export default function Footer() {
-  let history = useHistory();
-  let match = useRouteMatch();
-
-  console.log(history);
-  console.log(match);
-
   return (
     <>
       <Payments>
-        <i style={{color: "#003087", fontSize: "1.4rem"}} className="fas fa-lock"></i>{" "}
         <img src={paypal} alt="" />
       </Payments>
       <FinalCredits>
         <Flexed>
-          <Brand>Store</Brand>
-          <Info>
-            <Container>
-              <Ul left>
-                <Li to="/">My Cart</Li>
-                <Li to="/">About Us</Li>
-                <Li to="/">FAQ</Li>
-              </Ul>
-            </Container>
-            <Container>
-              <Ul right>
-                <Li to="/">Privacy</Li>
-                <Li to="/">Terms Of Use</Li>
-                <Li to="/">Refund</Li>
-              </Ul>
-            </Container>
-          </Info>
+          <Box>
+            <Brand>Store</Brand>
+            <Info>
+              <Container>
+                <Ul left>
+                  <Li to="/">My Cart</Li>
+                  <Li to="/">About Us</Li>
+                  <Li to="/">FAQ</Li>
+                </Ul>
+              </Container>
+              <Container>
+                <Ul right>
+                  <Li to="/">Privacy</Li>
+                  <Li to="/">Terms Of Use</Li>
+                  <Li to="/">Refund</Li>
+                </Ul>
+              </Container>
+            </Info>
+          </Box>
         </Flexed>
         <Flexed>
           <Apply to="/">Work With Us</Apply>
@@ -69,11 +63,12 @@ const FinalCredits = styled.footer`
   overflow: hidden;
   box-sizing: border-box;
   color: #fff;
-  z-index: -1;
+  z-index: 0;
   background-image: linear-gradient(135deg, #338, #335);
   @media (min-width: 768px) {
     display: flex;
-    padding: 40px;
+    font-size: 1.1rem;
+    padding: 40px 40px 70px;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -91,6 +86,11 @@ const Flexed = styled.div`
   }
 `;
 
+const Box = styled.div`
+  position: relative;
+  display: block;
+`;
+
 const Brand = styled.div`
   text-align: center;
   color: #fff;
@@ -100,7 +100,8 @@ const Brand = styled.div`
   margin: 30px auto 0;
   position: relative;
   @media (min-width: 768px) {
-    margin: 20px auto;
+    font-size: 1.9rem;
+    margin-bottom: 20px;
   }
 `;
 
@@ -149,6 +150,7 @@ const Ul = styled.ul`
     @media(min-width: 768px) {
     all: unset;
     display: flex;
+    padding: 30px;
     flex-direction: column;
   }
 `;
@@ -184,7 +186,7 @@ const Address = styled.address`
 `;
 
 const Filler = styled.div`
-  height: 10vh;
+  height: calc(9.7vh);
   background-color: #fff;
 
   @media (min-width: 768px) {
