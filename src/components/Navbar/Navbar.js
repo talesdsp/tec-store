@@ -1,20 +1,23 @@
 import React, {useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css, keyframes} from "styled-components";
+import {MenuCreators} from "../../store/ducks";
 import {TEXT} from "../../styled/ELEMENTS";
 import {AddedToCart} from "../index";
 import {HamburguerMenu, SideMenu} from "../Menu/Menu";
 
 export default function Navbar() {
-  const [{items}, {status, product}] = useSelector((state) => [
+  const [{items}, {status, product}, open] = useSelector((state) => [
     state.CartReducer,
-    state.NotificationReducer
+    state.NotificationReducer,
+    state.MenuReducer
   ]);
   let history = useHistory();
+  const dispatch = useDispatch();
 
   //burger menu
-  const [open, setOpen] = useState(false);
+
   const [drop, setDrop] = useState(false);
 
   const showCart = () => setDrop(true);
@@ -78,18 +81,24 @@ export default function Navbar() {
 
   return (
     <Nav>
+      <SideMenu MOBILE />
       {status && <AddedToCart product={product} />}
 
-      <SideMenu open={open} items={items} />
-      {open && <SHADOW onClick={() => setOpen(false)} />}
+      {open && <SHADOW onClick={() => dispatch(MenuCreators.close())} />}
 
       <Section>
-        <HamburguerMenu open={open} setOpen={setOpen} />
+        <HamburguerMenu open={open} />
 
         <Brand onClick={goBack}>Store</Brand>
 
         {items.length > 0 && <Counter>{items.length}</Counter>}
-        <Icon cart to="/cart" className="fas fa-shopping-cart" onPointerEnter={showCart} />
+        <Icon
+          cart
+          to="/cart"
+          className="fas fa-shopping-cart"
+          onMouseEnter={showCart}
+          onClick={showCart}
+        />
         <CartSummary />
       </Section>
       <Section>
@@ -119,7 +128,7 @@ const Counter = styled.div`
   right: 4%;
   top: 2px;
   @media (min-width: 768px) {
-    top: 6px;
+    top: 50px;
   }
 `;
 
@@ -132,7 +141,7 @@ const SHADOW = styled.div`
   overflow: hidden;
   height: 100vh;
   width: 100vw;
-  z-index: 1;
+  z-index: 2;
   transition: all 0.5s linear;
 `;
 
@@ -145,13 +154,13 @@ const SUMMARY = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 5px;
-  z-index: 1;
+  z-index: 2;
   transition: all 0.5s linear;
   background-color: #fff;
 
   @media (min-width: 768px) {
     right: 4.8%;
-    top: 70px;
+    top: 100px;
   }
 `;
 const Arrow = styled.div`
@@ -159,16 +168,17 @@ const Arrow = styled.div`
   right: 4.5px;
   transition: all 0.5s linear;
   top: -7px;
-  background-color: #335;
+  background-color: springgreen;
   width: 20px;
   height: 20px;
-  rotate: 45deg;
+
+  transform: rotate(45deg);
   transition: all 0.5s linear;
 `;
 
 const MyCart = styled.div`
   color: #fff;
-  background: #335;
+  background-image: linear-gradient(120deg, #338, #335);
   padding: 10px 0;
   transition: all 0.5s linear;
   text-align: center;
@@ -177,9 +187,10 @@ const MyCart = styled.div`
 `;
 
 const Scroll = styled.div`
-  height: calc(100% - 80px);
+  height: calc(100% - 90px);
   transition: all 0.5s linear;
   overflow-y: scroll;
+  background-color: #eee;
   overflow-x: hidden;
 `;
 
@@ -196,7 +207,7 @@ const ITEM = styled.div`
   height: 80px;
   overflow: hidden;
   flex-direction: row;
-  border-bottom: 1px solid #eee;
+
   transition: all 0.5s linear;
   animation: ${puff} 1s ease-in-out;
 `;
@@ -236,43 +247,41 @@ const Price = styled.div`
 `;
 
 const CTA = styled.div`
-  background-color: #eee;
+  background-image: linear-gradient(120deg, #335, #338);
   position: absolute;
   left: 0;
-  padding: 20px auto;
+  height: 40px;
   width: 100%;
   text-align: center;
   display: flex;
   flex-direction: row;
+  border-radius: 0 0 5px 5px;
   overflow: hidden;
   align-items: center;
+  border: none;
   bottom: 0;
 `;
 
 const Close = styled.button`
-  border-color: transparent;
+  border: none;
   flex: 1;
-  color: #333;
+  background-color: transparent;
   cursor: pointer;
-
   width: unset;
   height: unset;
   font-size: 1.6rem;
+  color: #fff;
 `;
 
 const Continue = styled.button`
-  border-color: transparent;
+  color: springgreen;
+  background-color: transparent;
+  border: 1px solid #338;
   font-size: 1.6rem;
-  padding: 0;
+  width: unset;
+  height: unset;
   flex: 1;
-  background-color: springgreen;
   cursor: pointer;
-  color: #fff;
-
-  /*   Added in case it is bad to read */
-  &:hover {
-    color: #000;
-  }
 `;
 
 //! ------------
@@ -289,16 +298,15 @@ const Nav = styled.nav`
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
+  z-index: 101;
   text-transform: capitalize !important;
 
   @media (min-width: 768px) {
-    font-size: 2rem;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    font-size: 3rem;
+    padding-top: 40px;
+    padding-bottom: 50px;
     border-radius: 2px;
     position: relative;
-    width: 80vw;
-    margin: 0 10vw;
   }
 `;
 
@@ -361,32 +369,33 @@ const Icon = styled.i`
       right: 5%;
     `}
     
-    ${(props) =>
-      props.arrow &&
-      css`
-        right: 25%;
-        color: #f80;
-        background-color: transparent;
-        text-shadow: 0 0 10px #ddd;
-        font-size: 4.5rem;
-      `}
-      
-      ${(props) =>
-        props.search &&
-        css`
-          color: #000;
-          position: relative;
-          margin-left: 5px;
-        `}
-
-
-@media(min-width: 500px){
   ${(props) =>
     props.arrow &&
     css`
-      right: 20%;
+      right: 28%;
+      color: #f80;
+      background-color: transparent;
+      text-shadow: 0 0 10px #ddd;
+      font-size: 4.5rem;
+
+      @media (min-width: 400px) {
+        right: 25%;
+      }
+
+      @media (min-width: 500px) {
+        right: 20%;
+      }
     `}
-}
+      
+  ${(props) =>
+    props.search &&
+    css`
+      color: #000;
+      position: relative;
+      margin-left: 5px;
+    `}
+
+
 
 @media (min-width: 768px) {
   font-size: 1.5rem;
