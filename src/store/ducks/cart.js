@@ -21,7 +21,7 @@ const addToCart = (state = INITIAL_STATE, action) => {
 
 const removeFromCart = (state = INITIAL_STATE, action) => {
   //return every minus the removed one
-  action.added = {...action.added, quantity: 0, inCart: false};
+  action.removed = {...action.removed, quantity: 0, inCart: false};
   return {items: state.items.filter((each) => each.id !== action.removed.id)};
 };
 
