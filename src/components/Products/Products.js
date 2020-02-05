@@ -56,10 +56,23 @@ export const ProductItem = React.memo(function ProductItem({
   CAROUSEL
 }) {
   const {id, name, img, info, price, company, reviews} = product;
-  // const [stars, updateStars] = useState(0);
+
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  console.log(inCart);
+  let amount = [];
+  let i = 0;
+  let copy = reviews.media;
+
+  while (i < Math.abs(reviews.media)) {
+    if (copy - 1 >= 0) {
+      amount.push("fas fa-star");
+    } else {
+      amount.push("fas fa-star-half-alt");
+    }
+    copy--;
+    i++;
+  }
 
   const handleClick = async () => {
     if (status === true) {
@@ -69,8 +82,6 @@ export const ProductItem = React.memo(function ProductItem({
     dispatch(ProductCreators.insideCart(product));
     dispatch(NotificationCreators.openNotification(product));
   };
-
-  let history = useHistory();
 
   const goDetails = () => !CART && history.push(`/details/${id}`);
 
@@ -92,13 +103,11 @@ export const ProductItem = React.memo(function ProductItem({
           <C.__NAME CART={CART}>{name}</C.__NAME>
 
           <C.__REVIEWS>
-            {
-              <>
-                <C.__STAR className="fas fa-star"></C.__STAR>
-                <C.__STAR className="fas fa-star-half-alt"></C.__STAR>
-              </>
-            }{" "}
-            {reviews} reviews
+            {amount.map((v, i) => (
+              <C.__STAR key={i} className={v}></C.__STAR>
+            ))}{" "}
+            {reviews.count}
+            {reviews.count > 1 ? "reviews" : "review"}
           </C.__REVIEWS>
           {!CART && (
             <C.__PRICE>
