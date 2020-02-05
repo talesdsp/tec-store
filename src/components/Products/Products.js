@@ -83,7 +83,7 @@ export const ProductItem = React.memo(function ProductItem({
     dispatch(NotificationCreators.openNotification(product));
   };
 
-  const goDetails = () => !CART && history.push(`/details/${id}`);
+  const goDetails = () => history.push(`/details/${id}`);
 
   return (
     <C.default CART={CART} CAROUSEL={CAROUSEL}>

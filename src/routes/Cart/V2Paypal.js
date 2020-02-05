@@ -22,7 +22,6 @@ export default class V2Paypal extends Component {
             ]
           });
         }}
-        style={{shape: "pill"}}
         onApprove={(data, action) => {
           return action.order.capture().then((details) => {
             alert("Transaction completed by " + details.payer.name.given_name);
@@ -32,8 +31,7 @@ export default class V2Paypal extends Component {
         options={{
           clientId:
             "Ae7DfccDlJ5O9razBWUSukOJZ2sJjhihhDkG4lepNXT2cX08V32G5X6IqvrruAL8ycb-f1ZfzBDLuUk4",
-          currency: "BRL",
-          commit: false
+          currency: "BRL"
         }}
         onCancel={(data) => alert(data)}
         onError={(err) => alert(err)}
