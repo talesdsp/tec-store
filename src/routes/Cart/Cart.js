@@ -4,6 +4,7 @@ import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
 import CarouselSection from "../../components/Carousel/Carousel";
 import InstallmentPlan from "../../components/Installment/Installment";
+import MobileNavigation from "../../components/MobileNavigation/MobileNavigation";
 import {ProductItem} from "../../components/Products/Products";
 import {CartCreators, ProductCreators} from "../../store/ducks";
 import "./bin.css";
@@ -38,6 +39,8 @@ export default function CartPage({history}) {
           <CarouselSection status={status} products={products} />
         </>
       )}
+
+      <MobileNavigation CART />
     </Window>
   );
 }

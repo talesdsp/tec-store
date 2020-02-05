@@ -5,7 +5,7 @@ export default class V2Paypal extends Component {
   render() {
     const checklist = this.props.checklist;
     const total = this.props.total;
-    const history = this.props.history;
+    // const history = this.props.history;
 
     return (
       <PayPalButton

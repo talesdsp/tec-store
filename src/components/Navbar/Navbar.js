@@ -443,7 +443,7 @@ const Nav = styled.nav`
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
-  z-index: 101;
+  z-index: 103;
   text-transform: capitalize !important;
 
   @media (min-width: 768px) {
@@ -590,7 +590,10 @@ const Search = styled.input`
   line-height: 1.2rem;
   padding: 5px 21px;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-color: #fff;
   margin-right: 5px;
+  @media (min-width: 440px) {
+    font-size: 1rem;
+  }
 `;
