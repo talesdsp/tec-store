@@ -234,13 +234,14 @@ export const __NAME = styled.div`
 
 export const __REVIEWS = styled.div`
   display: inline;
+  font-size: 1rem;
   color: #000;
 `;
 
 export const __STAR = styled.div`
   color: #ff0;
-  text-shadow: -1px -1px 1px #333, -1px 1px 1px #333, 1px -1px 1px #333, 1px 1px 1px #333;
-  padding: 3px 2px;
+  text-shadow: -1px -1px 1px #663, -1px 1px 1px #663, 1px -1px 1px #663, 1px 1px 1px #663;
+  padding: 3px 1px;
   margin-bottom: 5px;
 `;
 

@@ -16,7 +16,7 @@ function CarouselSection({status, products}) {
 
   const scrollRight = async (evt) => {
     let r = evt.target.previousSibling.children;
-    // console.log(d.scrollWidth, d.offsetWidth, d.clientWidth);
+
     if (r) r[0].scrollBy(width / 2, 0);
   };
 

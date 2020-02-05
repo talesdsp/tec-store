@@ -87,7 +87,6 @@ export default function Navbar() {
     const raw = escapeRegExp(evt.target.value);
 
     const regex = new RegExp(`${raw}`, "gi");
-    console.log("%c reset ----------", "font-color: red;");
 
     // return arr of products that match the input by at least 2 characters
     const res = products.filter((v) => {
