@@ -2,9 +2,9 @@ import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import {NotificationCreators} from "../store/ducks";
-import * as N from "../styled/blocks/notification";
-import {TEXT} from "../styled/elements";
+import {NotificationCreators} from "../store/ducks/index";
+import * as N from "../styled/blocks/notification/index";
+import {TEXT} from "../styled/elements/index";
 
 export const AddedToCart = ({product}) => {
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import styled, {css} from "./node_modules/styled-components";
+import styled, {css} from "styled-components";
 
 //  Declared just in case some child need to reference it
 const CARD = styled.div`

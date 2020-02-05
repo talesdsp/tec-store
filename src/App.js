@@ -7,7 +7,7 @@ import CartPage from "./routes/Cart/Cart";
 import DetailsPage from "./routes/Details/Details";
 import HomePage from "./routes/Home/Home";
 import Page404 from "./routes/Page404/Page404";
-import store from "./store";
+import store from "./store/index";
 
 function App() {
   console.log("%cEspere!", "color: red; font-size: 2.5rem; font-weight: bold;");

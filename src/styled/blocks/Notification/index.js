@@ -1,4 +1,4 @@
-import styled, {keyframes} from "./node_modules/styled-components/";
+import styled, {keyframes} from "styled-components";
 
 const notificate = keyframes`
 0%{

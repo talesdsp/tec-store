@@ -6,8 +6,8 @@ import CarouselSection from "../../components/Carousel/Carousel";
 import InstallmentPlan from "../../components/Installment/Installment";
 import {SideMenu} from "../../components/Menu/Menu";
 import MobileNavigation from "../../components/MobileNavigation/MobileNavigation";
-import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
-import {TEXT} from "../../styled/elements";
+import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks/index";
+import {TEXT} from "../../styled/elements/index";
 
 export default function DetailsPage({match}) {
   const [{status}, {products}] = useSelector((state) => [

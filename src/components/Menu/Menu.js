@@ -2,7 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
-import {FilterCreators, MenuCreators} from "../../store/ducks";
+import {FilterCreators, MenuCreators} from "../../store/ducks/index";
 
 export function SideMenu({MOBILE, PC}) {
   const dispatch = useDispatch();
