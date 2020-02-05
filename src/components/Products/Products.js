@@ -106,8 +106,7 @@ export const ProductItem = React.memo(function ProductItem({
             {amount.map((v, i) => (
               <C.__STAR key={i} className={v}></C.__STAR>
             ))}{" "}
-            {reviews.count}
-            {reviews.count > 1 ? "reviews" : "review"}
+            {reviews.media.toFixed(1)} - {reviews.count}k
           </C.__REVIEWS>
           {!CART && (
             <C.__PRICE>

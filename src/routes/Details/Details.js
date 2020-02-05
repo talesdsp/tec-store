@@ -64,7 +64,7 @@ export default function DetailsPage({match}) {
         </Table>
 
         {/*  // ! navigation buttons. ? fixed bottom, mobile only */}
-        <MobileNavigation thisProduct={thisProduct} />
+        <MobileNavigation inCart={thisProduct.inCart} thisProduct={thisProduct} />
       </Section>
 
       {/* // ! carousel on bottom page */}

@@ -2,6 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 import {SideMenu} from "../../components/Menu/Menu";
+import MobileNavigation from "../../components/MobileNavigation/MobileNavigation";
 import ProductsList from "../../components/Products/Products";
 import {FilterCreators} from "../../store/ducks";
 
@@ -38,6 +39,7 @@ export default function HomePage() {
       <Container>
         <ProductsList filter={filter} />
       </Container>
+      <MobileNavigation HOME />
     </Home>
   );
 }
