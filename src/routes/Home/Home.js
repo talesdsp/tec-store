@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {SideMenu} from "../../components/Menu/Menu";
 import MobileNavigation from "../../components/MobileNavigation/MobileNavigation";
 import ProductsList from "../../components/Products/Products";
-import {FilterCreators} from "../../store/ducks";
+import {FilterCreators} from "../../store/ducks/index";
 
 export default function HomePage() {
   const [{products}, {filter}] = useSelector((state) => [

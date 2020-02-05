@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
 import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
-import * as C from "../../styled/blocks/card";
-import {ADD_BUTTON} from "../../styled/elements";
+import * as C from "../../styled/blocks/card/index";
+import {ADD_BUTTON} from "../../styled/elements/index";
 import {TextOrIcon} from "../index";
 
 export default function ProductsList({filter}) {
