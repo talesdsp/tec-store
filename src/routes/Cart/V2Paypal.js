@@ -30,7 +30,8 @@ export default class V2Paypal extends Component {
           });
         }}
         options={{
-          clientId: "sb",
+          clientId:
+            "Ae7DfccDlJ5O9razBWUSukOJZ2sJjhihhDkG4lepNXT2cX08V32G5X6IqvrruAL8ycb-f1ZfzBDLuUk4",
           currency: "BRL",
           commit: false
         }}

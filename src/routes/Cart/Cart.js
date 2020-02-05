@@ -6,7 +6,7 @@ import CarouselSection from "../../components/Carousel/Carousel";
 import InstallmentPlan from "../../components/Installment/Installment";
 import MobileNavigation from "../../components/MobileNavigation/MobileNavigation";
 import {ProductItem} from "../../components/Products/Products";
-import {CartCreators, ProductCreators} from "../../store/duck/index";
+import {CartCreators, ProductCreators} from "../../store/ducks/index";
 import "./bin.css";
 import V2Paypal from "./V2Paypal";
 

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css, keyframes} from "styled-components";
-import {MenuCreators} from "../../store/index";
+import {MenuCreators} from "../../store/ducks/index";
 import {TEXT} from "../../styled/elements/index";
 import {AddedToCart} from "../index";
 import {HamburguerMenu, SideMenu} from "../Menu/Menu";
