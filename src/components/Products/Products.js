@@ -2,10 +2,10 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled, {css} from "styled-components";
-import {TextOrIcon} from "..";
 import {CartCreators, NotificationCreators, ProductCreators} from "../../store/ducks";
-import * as C from "../../styled/blocks/CARD";
-import {ADD_BUTTON} from "../../styled/ELEMENTS";
+import * as C from "../../styled/blocks/card";
+import {ADD_BUTTON} from "../../styled/elements";
+import {TextOrIcon} from "../index";
 
 export default function ProductsList({filter}) {
   const [{products}, {status, prev}] = useSelector((state) => [

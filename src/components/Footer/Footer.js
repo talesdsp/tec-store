@@ -1,7 +1,7 @@
 import React from "react";
 import styled, {css} from "styled-components";
 import paypal from "../../paypal.svg";
-import {A} from "../../styled/ELEMENTS";
+import {A} from "../../styled/elements";
 
 export default function Footer() {
   return (

@@ -3,8 +3,8 @@ import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 import {NotificationCreators} from "../store/ducks";
-import * as N from "../styled/blocks/NOTIFICATION";
-import {TEXT} from "../styled/ELEMENTS";
+import * as N from "../styled/blocks/notification";
+import {TEXT} from "../styled/elements";
 
 export const AddedToCart = ({product}) => {
   const dispatch = useDispatch();

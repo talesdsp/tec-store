@@ -8,7 +8,7 @@ import {
   NotificationCreators,
   ProductCreators
 } from "../../store/ducks";
-import {ADD_BUTTON} from "../../styled/ELEMENTS";
+import {ADD_BUTTON} from "../../styled/elements";
 import {TextOrIcon} from "../index";
 
 export default function MobileNavigation({inCart, thisProduct, HOME, CART}) {

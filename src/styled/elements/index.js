@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {Link} from "react-router-dom";
-import styled, {css, keyframes} from "styled-components";
+import React, {useState} from "./node_modules/react";
+import {Link} from "./node_modules/react-router-dom";
+import styled, {css, keyframes} from "./node_modules/styled-components";
 
 export const A = styled(Link)`
   display: block;
