@@ -83,8 +83,16 @@ export const ProductItem = React.memo(function ProductItem({
     dispatch(NotificationCreators.openNotification(product));
   };
 
+  const target = document.querySelector("#here");
+
   const goDetails = (evt) => {
     history.push(`/details/${id}`);
+
+    if (CAROUSEL) {
+      smooth(target, 800);
+      setTimeout(() => addFocus(target), 1000);
+    }
+    return;
 
     function smooth(target, duration) {
       let targetPosition = target.getBoundingClientRect().top;
@@ -110,10 +118,6 @@ export const ProductItem = React.memo(function ProductItem({
       }
       window.requestAnimationFrame(animation);
     }
-    let target = document.querySelector("#here");
-
-    smooth(target, 800);
-    setTimeout(() => addFocus(target), 1000);
 
     function addFocus(t) {
       t.nextSibling.focus();
@@ -125,6 +129,7 @@ export const ProductItem = React.memo(function ProductItem({
       }
     }
   };
+
   window.AOS.init({
     easing: "ease",
     duration: 1800,

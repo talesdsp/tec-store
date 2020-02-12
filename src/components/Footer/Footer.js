@@ -12,7 +12,7 @@ export default function Footer() {
       <FinalCredits>
         <Flexed>
           <Box>
-            <Brand>Store</Brand>
+            <Brand>TecStore</Brand>
             <Info>
               <Container>
                 <Ul left>
