@@ -133,7 +133,7 @@ export default function Navbar() {
       <Section>
         <HamburguerMenu open={open} />
 
-        <Brand onClick={goBack}>Store</Brand>
+        <Brand onClick={goBack}>TecStore</Brand>
 
         {items.length > 0 && <Counter>{items.length}</Counter>}
         <Icon

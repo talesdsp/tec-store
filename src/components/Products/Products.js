@@ -83,12 +83,58 @@ export const ProductItem = React.memo(function ProductItem({
     dispatch(NotificationCreators.openNotification(product));
   };
 
-  const goDetails = () => history.push(`/details/${id}`);
+  const goDetails = (evt) => {
+    history.push(`/details/${id}`);
+
+    function smooth(target, duration) {
+      let targetPosition = target.getBoundingClientRect().top;
+      let startPosition = window.pageYOffset;
+      let startTime = null;
+
+      function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+
+        let timeElapsed = currentTime - startTime;
+        let run = ease(timeElapsed, startPosition, targetPosition, duration);
+
+        window.scrollTo(0, run);
+
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+      }
+
+      function ease(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return (c / 2) * t * t + b;
+        t--;
+        return (-c / 2) * (t * (t - 2) - 1) + b;
+      }
+      window.requestAnimationFrame(animation);
+    }
+    let target = document.querySelector("#here");
+
+    smooth(target, 800);
+    setTimeout(() => addFocus(target), 1000);
+
+    function addFocus(t) {
+      t.nextSibling.focus();
+      if (document.activeElement === t.nextSibling) {
+        return false;
+      } else {
+        t.nextSibling.setAttribute("tabindex", "-1"); // Adding tabindex for elements not focusable
+        t.nextSibling.focus(); // Set focus again
+      }
+    }
+  };
+  window.AOS.init({
+    easing: "ease",
+    duration: 1800,
+    once: true
+  });
 
   return (
     <C.default CART={CART} CAROUSEL={CAROUSEL}>
       {/* <Ripplefy> */}
-      <C.__CONTAINER CART={CART} CAROUSEL={CAROUSEL} onClick={goDetails}>
+      <C.__CONTAINER CART={CART} CAROUSEL={CAROUSEL} id="container" onClick={goDetails}>
         <C.__HEADER CART={CART} CAROUSEL={CAROUSEL}>
           <C.__IMAGE
             CART={CART}

@@ -30,8 +30,9 @@ export default function DetailsPage({match}) {
 
   return (
     <Details>
-      {/* // ! Fixed left side menu /  pc only */}
       <SideMenu PC />
+
+      <div id="here" style={{position: "absolute", top: 0, left: 0}}></div>
 
       <Section main>
         <Image src={`${process.env.PUBLIC_URL}/${img}`} alt={name} />
@@ -43,8 +44,6 @@ export default function DetailsPage({match}) {
           </Btn>
         </Cart>
       </Section>
-
-      {/* //! product description */}
       <Section>
         <Title MOBILE strong>
           {name}
@@ -62,15 +61,9 @@ export default function DetailsPage({match}) {
             </Row>
           ))}
         </Table>
-
-        {/*  // ! navigation buttons. ? fixed bottom, mobile only */}
-        <MobileNavigation inCart={thisProduct.inCart} thisProduct={thisProduct} />
       </Section>
-
-      {/* // ! carousel on bottom page */}
       <CarouselSection status={status} products={products} />
-
-      {/* // ! end of page */}
+      <MobileNavigation inCart={thisProduct.inCart} thisProduct={thisProduct} />
     </Details>
   );
 }
