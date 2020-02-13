@@ -83,16 +83,12 @@ export const ProductItem = React.memo(function ProductItem({
     dispatch(NotificationCreators.openNotification(product));
   };
 
-  const target = document.querySelector("#here");
+  const goDetails = async (evt) => {
+    await history.push(`/details/${id}`);
 
-  const goDetails = (evt) => {
-    history.push(`/details/${id}`);
-
-    if (CAROUSEL) {
-      smooth(target, 800);
-      setTimeout(() => addFocus(target), 1000);
-    }
-    return;
+    const target = document.querySelector("#here");
+    smooth(target, 800);
+    setTimeout(() => addFocus(target), 1200);
 
     function smooth(target, duration) {
       let targetPosition = target.getBoundingClientRect().top;
