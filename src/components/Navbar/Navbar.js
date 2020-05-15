@@ -1,18 +1,18 @@
-import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
-import styled, {css, keyframes} from "styled-components";
-import {MenuCreators} from "../../store/ducks/index";
-import {TEXT} from "../../styled/elements/index";
-import {AddedToCart} from "../index";
-import {HamburguerMenu, SideMenu} from "../Menu/Menu";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import styled, { css, keyframes } from "styled-components";
+import { MenuCreators } from "../../store/ducks/index";
+import { TEXT } from "../../styled/elements/index";
+import { AddedToCart } from "../index";
+import { HamburguerMenu, SideMenu } from "../Menu/Menu";
 
 export default function Navbar() {
-  const [{items}, {status, product}, open, {products}] = useSelector((state) => [
+  const [{ items }, { status, product }, open, { products }] = useSelector((state) => [
     state.CartReducer,
     state.NotificationReducer,
     state.MenuReducer,
-    state.ProductReducer
+    state.ProductReducer,
   ]);
 
   const history = useHistory();
@@ -27,12 +27,13 @@ export default function Navbar() {
 
   const goBack = () => history.push("/") & closeCart();
   const goCart = () => history.push("/cart") & closeCart();
+  const goProduct = (id) => history.push("/details/" + id) & closeCart();
 
   const DisplayItems = () => {
     return items.length > 0 ? (
       <Scroll>
         {items.map((v, i) => (
-          <ITEM key={i}>
+          <ITEM key={i} onClick={() => goProduct(v.id)}>
             <Head>
               <Image src={`${process.env.PUBLIC_URL}/${v.img}`} alt={v.name} />
             </Head>
@@ -42,7 +43,7 @@ export default function Navbar() {
               <Price>
                 {(v.price * v.quantity).toLocaleString("pt-br", {
                   style: "currency",
-                  currency: "BRL"
+                  currency: "BRL",
                 })}
               </Price>
             </Info>
@@ -50,9 +51,9 @@ export default function Navbar() {
         ))}
       </Scroll>
     ) : (
-      <div style={{padding: "20px"}}>
-        <TEXT style={{color: "#333", marginBottom: "20px"}}>Your cart is empty.</TEXT>
-        <TEXT style={{color: "#333"}}>Start adding products.</TEXT>
+      <div style={{ padding: "20px" }}>
+        <TEXT style={{ color: "#333", marginBottom: "20px" }}>Your cart is empty.</TEXT>
+        <TEXT style={{ color: "#333" }}>Start adding products.</TEXT>
       </div>
     );
   };
@@ -352,8 +353,10 @@ const ITEM = styled.div`
   height: 80px;
   overflow: hidden;
   flex-direction: row;
-
+  background: #fff;
+  border-bottom: 1px solid #eee;
   transition: all 0.5s linear;
+  cursor: pointer;
   animation: ${puff} 1s ease-in-out;
 `;
 
