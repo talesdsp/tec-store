@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 //  Declared just in case some child need to reference it
 const CARD = styled.div`
@@ -6,7 +6,7 @@ const CARD = styled.div`
   height: 120px;
   text-align: left;
   position: relative;
-  box-shadow: -3px -3px 9px rgba(255, 255, 255, 1), 3px 3px 9px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: all 0.5s linear;
   background: #fff;
   overflow: hidden;
